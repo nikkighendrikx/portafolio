@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Portafolio de STUDIO NIKKI: web design y creación digital.">
+<title>STUDIO NIKKI · Proyectos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..500&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: coluna larga e calma; o primeiro projeto ocupa a largura toda, os outros dividem a linha; cada cartão é uma "janela de navegador" com a captura do site. */
+:root{
+  --bg:#f9f8fb; --surface:#ffffff; --lav:#efeaf7; --lav-2:#d9cdee;
+  --ink:#2a2140; --muted:#6f6682; --accent:#4a2a78; --accent-ink:#ffffff; --line:#e9e4f1;
+  --f-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shadow:0 30px 60px -40px rgba(60,30,110,.45);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15121c;--surface:#1e1928;--lav:#28213a;--lav-2:#43375e;--ink:#f1ecfa;--muted:#b3a9c6;
+  --accent:#c9b5f0;--accent-ink:#1e1530;--line:#2e2740;--shadow:0 30px 60px -40px rgba(0,0,0,.8);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15121c;--surface:#1e1928;--lav:#28213a;--lav-2:#43375e;--ink:#f1ecfa;--muted:#b3a9c6;
+  --accent:#c9b5f0;--accent-ink:#1e1530;--line:#2e2740;--shadow:0 30px 60px -40px rgba(0,0,0,.8);color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px;border-bottom:1px solid var(--line)}
+.wordmark{font-family:var(--f-display);letter-spacing:.32em;font-size:1rem;color:var(--accent);text-decoration:none;white-space:nowrap}
+.langs{display:flex;gap:4px;font-size:.82rem;font-weight:600}
+.langs button{background:none;border:0;color:var(--muted);cursor:pointer;padding:6px 8px;border-radius:8px;font:inherit;letter-spacing:.06em}
+.langs button[aria-pressed="true"]{color:var(--accent);background:var(--lav)}
+
+.intro{padding-block:clamp(48px,8vw,96px) clamp(36px,5vw,56px);display:flex;flex-direction:column;gap:18px;max-width:720px}
+.eyebrow{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.intro h1{font-size:clamp(2.3rem,5.5vw,3.6rem);color:var(--accent)}
+.intro p{color:var(--muted);font-size:1.12rem;max-width:56ch}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.project{display:flex;flex-direction:column;gap:18px;text-decoration:none;color:inherit;min-width:0}
+.project.featured{grid-column:1/-1}
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);transition:transform .25s}
+.bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--lav)}
+.bar i{width:9px;height:9px;border-radius:50%;background:var(--lav-2)}
+.bar span{margin-left:10px;font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot{aspect-ratio:16/9;max-width:100%;width:100%;display:block;object-fit:cover;object-position:top;background:var(--lav)}
+.project:hover .frame{transform:translateY(-4px)}
+.meta{display:flex;flex-direction:column;gap:8px;padding-inline:4px}
+.meta-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.meta h2{font-size:1.6rem}
+.featured .meta h2{font-size:2rem}
+.go{font-weight:600;font-size:.92rem;color:var(--accent);white-space:nowrap}
+.go::after{content:" →";transition:margin .2s}
+.project:hover .go::after{margin-left:4px}
+.meta p{color:var(--muted);max-width:62ch}
+.badge{font-size:.78rem;font-weight:600;color:var(--muted);border:1px dashed var(--lav-2);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.project.soon:hover .frame{transform:none}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:.74rem;padding:3px 10px;border-radius:999px;background:var(--lav);color:var(--accent);font-weight:600;letter-spacing:.03em}
+
+footer{margin-top:clamp(64px,9vw,110px);border-top:1px solid var(--line)}
+footer .wrap{padding-block:36px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer p{color:var(--muted);font-size:.95rem}
+.cta{display:inline-flex;padding:12px 22px;border-radius:999px;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="wordmark" href="https://studionikki.com.br/" target="_blank" rel="noopener">STUDIO NIKKI</a>
+    <div class="langs" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es">ES</button>
+      <button type="button" data-lang="pt">PT</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <span class="eyebrow" data-t="eyebrow">Web design · Creación digital</span>
+    <h1 data-t="title">Proyectos</h1>
+    <p data-t="lead">Sitios y herramientas que diseñé para pequeños negocios y profesionales.</p>
+  </section>
+
+  <section class="grid" aria-label="Projects">
+    <a class="project featured" href="https://studionikki.com.br/" target="_blank" rel="noopener">
+      <div class="frame">
+        <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>studionikki.com.br</span></div>
+        <img class="shot" src="img/studio.png" alt="Página inicial do site STUDIO NIKKI" loading="eager">
+      </div>
+      <div class="meta">
+        <div class="meta-top"><h2>Studio Nikki</h2><span class="go" data-t="visit">Ver sitio</span></div>
+        <p data-t="p1">El sitio de mi estudio: servicios, precios transparentes y pedido de presupuesto por WhatsApp, en español, portugués e inglés.</p>
+        <div class="tags"><span class="tag" data-t="t_web">Sitio web</span><span class="tag" data-t="t_multi">Multilingüe</span></div>
+      </div>
+    </a>
+
+    <a class="project" href="https://endiviafresh.com.br/" target="_blank" rel="noopener">
+      <div class="frame">
+        <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>endiviafresh.com.br</span></div>
+        <img class="shot" src="img/endivia.png" alt="Página inicial do site Endivia Fresh" loading="lazy">
+      </div>
+      <div class="meta">
+        <div class="meta-top"><h2>Endivia Fresh</h2><span class="go" data-t="visit">Ver sitio</span></div>
+        <p data-t="p2">Sitio para endivias Flamingo en São Paulo: variedades, beneficios, recetas y venta minorista y mayorista.</p>
+        <div class="tags"><span class="tag" data-t="t_inst">Sitio institucional</span><span class="tag" data-t="t_food">Alimentos</span></div>
+      </div>
+    </a>
+
+    <div class="project soon">
+      <div class="frame">
+        <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span data-t="bar3">Agenda online</span></div>
+        <img class="shot" src="img/agenda.png" alt="Página de agendamento do Consultório Acolher" loading="lazy">
+      </div>
+      <div class="meta">
+        <div class="meta-top"><h2>Consultório Acolher</h2><span class="badge" data-t="soon">Próximamente</span></div>
+        <p data-t="p3">Agenda online para una psicóloga: el paciente elige día y horario en tres pasos, y ella gestiona su disponibilidad y la semana en un panel con IA.</p>
+        <div class="tags"><span class="tag" data-t="t_app">Aplicación</span><span class="tag" data-t="t_ai">IA</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p data-t="foot">¿Tenés un proyecto en mente?</p>
+    <a class="cta" href="https://studionikki.com.br/" target="_blank" rel="noopener" data-t="cta">Pedí tu presupuesto</a>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const T = {
+    es:{eyebrow:"Web design · Creación digital",title:"Proyectos",lead:"Sitios y herramientas que diseñé para pequeños negocios y profesionales.",
+      visit:"Ver sitio",see:"Ver proyecto",soon:"Próximamente",bar3:"Agenda online",
+      p1:"El sitio de mi estudio: servicios, precios transparentes y pedido de presupuesto por WhatsApp, en español, portugués e inglés.",
+      p2:"Sitio para endivias Flamingo en São Paulo: variedades, beneficios, recetas y venta minorista y mayorista.",
+      p3:"Agenda online para una psicóloga: el paciente elige día y horario en tres pasos, y ella gestiona su disponibilidad y la semana en un panel con IA.",
+      t_web:"Sitio web",t_multi:"Multilingüe",t_inst:"Sitio institucional",t_food:"Alimentos",t_app:"Aplicación",t_ai:"IA",
+      foot:"¿Tenés un proyecto en mente?",cta:"Pedí tu presupuesto"},
+    pt:{eyebrow:"Web design · Criação digital",title:"Projetos",lead:"Sites e ferramentas que desenhei para pequenos negócios e profissionais.",
+      visit:"Ver site",see:"Ver projeto",soon:"Em breve",bar3:"Agenda online",
+      p1:"O site do meu estúdio: serviços, preços transparentes e pedido de orçamento pelo WhatsApp, em espanhol, português e inglês.",
+      p2:"Site das endívias Flamingo em São Paulo: variedades, benefícios, receitas e venda no varejo e no atacado.",
+      p3:"Agenda online para uma psicóloga: o paciente escolhe dia e horário em três passos, e ela gerencia a disponibilidade e a semana num painel com IA.",
+      t_web:"Site",t_multi:"Multilíngue",t_inst:"Site institucional",t_food:"Alimentos",t_app:"Aplicativo",t_ai:"IA",
+      foot:"Tem um projeto em mente?",cta:"Peça seu orçamento"},
+    en:{eyebrow:"Web design · Digital creation",title:"Projects",lead:"Websites and tools I designed for small businesses and professionals.",
+      visit:"Visit site",see:"View project",soon:"Coming soon",bar3:"Online booking",
+      p1:"My studio's website: services, clear pricing and quote requests over WhatsApp, in Spanish, Portuguese and English.",
+      p2:"Website for Flamingo endives in São Paulo: varieties, benefits, recipes, and retail and wholesale sales.",
+      p3:"Online booking for a psychologist: patients pick a day and time in three steps, and she manages her availability and week in a panel with AI.",
+      t_web:"Website",t_multi:"Multilingual",t_inst:"Business site",t_food:"Food",t_app:"Web app",t_ai:"AI",
+      foot:"Have a project in mind?",cta:"Request a quote"}
+  };
+  function setLang(l){
+    if(!T[l]) l="es";
+    document.documentElement.lang = l==="pt"?"pt-BR":l;
+    document.querySelectorAll("[data-t]").forEach(e=>{ const v=T[l][e.dataset.t]; if(v) e.textContent=v; });
+    document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===l)));
+    try{ localStorage.setItem("lang",l); }catch(e){}
+  }
+  document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+  let saved=null; try{ saved=localStorage.getItem("lang"); }catch(e){}
+  const nav=(navigator.language||"es").slice(0,2);
+  setLang(saved || (T[nav]?nav:"es"));
+})();
+</script>
+
+</body>
+</html>
