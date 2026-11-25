@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Folha & Grão: café de especialidad, dulces caseros y salados en un espacio luminoso lleno de plantas.">
+<title>Folha & Grão · Café de especialidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+:root{
+  --cream:#fbf7ef; --paper:#ffffff; --sand:#f1e8d8; --leaf:#2f5d3f; --leaf-2:#477a57; --moss:#e3ecdf;
+  --clay:#c4693f; --ink:#2b2a24; --muted:#6b675c; --line:#e7dfcf;
+  --f-display:"Young Serif", Georgia, serif;
+  --f-body:"Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:22px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+html,body{margin:0}
+body{background:var(--cream);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.1;margin:0;text-wrap:balance}
+p{margin:0}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--clay);outline-offset:3px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:max(20px,env(safe-area-inset-left,0px))}
+.eyebrow{font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--clay)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700;transition:transform .2s, background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-leaf{background:var(--leaf);color:#fff}
+.btn-leaf:hover{background:var(--leaf-2)}
+.btn-ghost{background:rgba(255,255,255,.9);color:var(--leaf)}
+
+/* Header */
+header{position:sticky;top:0;z-index:20;background:rgba(251,247,239,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--leaf)}
+.logo svg{width:34px;height:34px;flex:none}
+.logo b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;letter-spacing:.01em;white-space:nowrap}
+nav ul{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-weight:500;padding:8px 12px;border-radius:999px;color:var(--ink)}
+nav a:hover{background:var(--moss);color:var(--leaf)}
+.right{display:flex;align-items:center;gap:10px}
+.langs{display:flex;gap:2px;font-size:.8rem;font-weight:700}
+.langs button{background:none;border:0;color:var(--muted);cursor:pointer;padding:6px 8px;border-radius:8px;font:inherit;letter-spacing:.06em}
+.langs button[aria-pressed="true"]{color:var(--leaf);background:var(--moss)}
+@media (max-width:860px){nav{display:none}}
+
+/* Hero */
+.hero{padding-block:clamp(18px,3vw,32px) 0}
+.hero-card{position:relative;border-radius:calc(var(--r) + 8px);overflow:hidden;min-height:min(78vh,720px);display:flex;align-items:flex-end;background:var(--sand)}
+.hero-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,30,20,0) 35%,rgba(20,30,20,.62) 100%)}
+.hero-text{position:relative;z-index:1;padding:clamp(24px,5vw,56px);color:#fff;display:flex;flex-direction:column;gap:18px;max-width:760px}
+.hero-text .eyebrow{color:#ffd9bf}
+.hero h1{font-size:clamp(2.6rem,7vw,5.2rem)}
+.hero p{font-size:1.15rem;max-width:48ch;opacity:.95}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.open-pill{position:absolute;z-index:1;top:20px;right:20px;background:rgba(255,255,255,.92);color:var(--leaf);padding:8px 14px;border-radius:999px;font-weight:700;font-size:.88rem;display:flex;align-items:center;gap:8px}
+.open-pill i{width:9px;height:9px;border-radius:50%;background:#3fa55b;box-shadow:0 0 0 4px rgba(63,165,91,.2)}
+.open-pill.closed i{background:var(--clay);box-shadow:0 0 0 4px rgba(196,105,63,.2)}
+
+/* Highlights strip */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-block:clamp(40px,6vw,64px)}
+.strip div{display:flex;gap:14px;align-items:flex-start}
+.strip svg{flex:none;width:42px;height:42px;color:var(--leaf);background:var(--moss);border-radius:50%;padding:9px}
+.strip h3{font-size:1.2rem;margin-bottom:4px}
+.strip p{color:var(--muted);font-size:.98rem}
+@media (max-width:760px){.strip{grid-template-columns:1fr}}
+
+/* Story */
+section{scroll-margin-top:80px}
+.story{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(28px,5vw,72px);align-items:center;padding-block:clamp(40px,6vw,80px)}
+.story-photos{position:relative}
+.story-photos .a{border-radius:var(--r);aspect-ratio:4/5;object-fit:cover;width:82%}
+.story-photos .b{position:absolute;right:0;bottom:-28px;width:46%;aspect-ratio:1;object-fit:cover;border-radius:var(--r);border:8px solid var(--cream)}
+.story-text{display:flex;flex-direction:column;gap:18px}
+.story h2,.sec-head h2{font-size:clamp(2rem,4.4vw,3.1rem);color:var(--leaf)}
+.story-text p{color:var(--muted);font-size:1.08rem;max-width:52ch}
+.stats{display:flex;gap:30px;flex-wrap:wrap;margin-top:6px}
+.stats b{display:block;font-family:var(--f-display);font-weight:400;font-size:2rem;color:var(--clay)}
+.stats span{font-size:.9rem;color:var(--muted)}
+@media (max-width:860px){.story{grid-template-columns:1fr}.story-photos{margin-bottom:28px}}
+
+/* Menu */
+.menu{background:var(--paper);border-block:1px solid var(--line);padding-block:clamp(56px,8vw,100px)}
+.sec-head{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;margin-bottom:34px}
+.sec-head p{color:var(--muted);max-width:56ch}
+.tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+.tabs button{border:1px solid var(--line);background:var(--cream);color:var(--ink);padding:10px 20px;border-radius:999px;font:inherit;font-weight:700;cursor:pointer;transition:background .2s,color .2s}
+.tabs button[aria-selected="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.menu-body{display:grid;grid-template-columns:380px 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.menu-photo{border-radius:var(--r);overflow:hidden;position:sticky;top:96px;aspect-ratio:4/5;background:var(--sand)}
+.menu-photo img{width:100%;height:100%;object-fit:cover}
+.items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 36px}
+.item{padding:18px 0;border-bottom:1px dashed var(--line)}
+.item-top{display:flex;align-items:baseline;gap:10px}
+.item h3{font-family:var(--f-body);font-weight:700;font-size:1.05rem}
+.item .dots{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px)}
+.item .price{font-weight:700;color:var(--leaf);white-space:nowrap}
+.item p{color:var(--muted);font-size:.95rem;margin-top:4px}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.tag.v{background:var(--moss);color:var(--leaf)}
+.tag.h{background:#fbe3d6;color:#9a4a26}
+.menu-note{margin-top:28px;color:var(--muted);font-size:.9rem}
+@media (max-width:960px){.menu-body{grid-template-columns:1fr}.menu-photo{position:relative;top:0;aspect-ratio:16/9}}
+@media (max-width:640px){.items{grid-template-columns:1fr}}
+
+/* Space gallery */
+.space{padding-block:clamp(56px,8vw,100px)}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:14px}
+.gallery figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;background:var(--sand)}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.gallery figure:hover img{transform:scale(1.04)}
+.gallery figcaption{position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.92);color:var(--leaf);font-weight:700;font-size:.85rem;padding:6px 12px;border-radius:999px}
+.g1{grid-column:span 2;grid-row:span 2}
+.g2{grid-column:span 2}
+.g3{grid-column:span 1}
+.g4{grid-column:span 1}
+@media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:180px}.g1,.g2{grid-column:span 2}}
+
+/* Visit */
+.visit{padding-bottom:clamp(56px,8vw,100px)}
+.visit-card{display:grid;grid-template-columns:1fr 1fr;border-radius:calc(var(--r) + 8px);overflow:hidden;background:var(--leaf);color:#fff}
+.visit-card img{width:100%;height:100%;object-fit:cover;min-height:340px}
+.visit-info{padding:clamp(28px,5vw,56px);display:flex;flex-direction:column;gap:22px}
+.visit-info .eyebrow{color:#ffd9bf}
+.visit-info h2{font-size:clamp(2rem,4vw,2.8rem)}
+.hours{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.hours li{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:8px}
+.hours li.today{font-weight:700;color:#ffd9bf}
+.addr{opacity:.9}
+.visit-info .btn-ghost{align-self:flex-start}
+@media (max-width:860px){.visit-card{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--line)}
+footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}
+footer a{color:var(--leaf);font-weight:700}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Folha & Grão">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#2f5d3f"/><path d="M20 30c0-8 3-13 9-16-1 7-4 12-9 16z" fill="#a8cf9a"/><path d="M20 30c0-7-3-11-8-13 1 6 3 10 8 13z" fill="#e3ecdf"/><ellipse cx="20" cy="13" rx="3.2" ry="4.4" fill="#c4693f"/><path d="M20 9c-1 2-1 6 0 8" stroke="#2f5d3f" stroke-width="1" fill="none"/></svg>
+      <b>Folha & Grão</b>
+    </a>
+    <nav aria-label="Principal"><ul>
+      <li><a href="#historia" data-t="nav1">Nosotros</a></li>
+      <li><a href="#menu" data-t="nav2">Menú</a></li>
+      <li><a href="#espacio" data-t="nav3">El espacio</a></li>
+      <li><a href="#visita" data-t="nav4">Visitanos</a></li>
+    </ul></nav>
+    <div class="right">
+      <div class="langs" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es">ES</button>
+        <button type="button" data-lang="pt">PT</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <div class="hero-card">
+      <img src="img/hero.jpg" alt="Salón luminoso de la cafetería, con ventanales y muchas plantas" fetchpriority="high">
+      <span class="open-pill" id="openPill"><i></i><span id="openText"></span></span>
+      <div class="hero-text">
+        <span class="eyebrow" data-t="h_eye">Café de especialidad · São Paulo</span>
+        <h1 data-t="h_title">Café con luz, plantas y algo rico al lado.</h1>
+        <p data-t="h_lead">Granos de pequeños productores, tostados por nosotros, dulces horneados cada mañana y salados para quedarse un rato más.</p>
+        <div class="ctas">
+          <a class="btn btn-leaf" href="#menu" data-t="h_cta1">Ver el menú</a>
+          <a class="btn btn-ghost" href="#visita" data-t="h_cta2">Cómo llegar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap strip">
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 1.5 1 1.5 1 3M12 3c0 1.5 1 1.5 1 3"/></svg>
+      <span><h3 data-t="s1h">Tostado de la casa</h3><p data-t="s1p">Cafés de Minas Gerais, Espírito Santo y la Mantiqueira, tostados cada semana.</p></span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 15c0-4 3.5-7 8-7s8 3 8 7z"/><path d="M3 15h18v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 8V5"/></svg>
+      <span><h3 data-t="s2h">Horneado cada mañana</h3><p data-t="s2p">Croissants, tortas y panes salen del horno antes de abrir la puerta.</p></span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M12 21V11"/><path d="M12 13c-4 0-7-3-7-8 4 0 7 3 7 8z"/><path d="M12 11c0-4 3-7 7-7 0 4-3 7-7 7z"/><path d="M7 21h10"/></svg>
+      <span><h3 data-t="s3h">Más de 120 plantas</h3><p data-t="s3p">Un salón con sol todo el día y una terraza verde para trabajar o charlar.</p></span>
+    </div>
+  </div>
+
+  <section class="wrap story" id="historia">
+    <div class="story-photos">
+      <img class="a" src="img/barra.jpg" alt="Barra de café con estantes de madera, frascos de granos y plantas colgantes" loading="lazy">
+      <img class="b" src="img/rincon.jpg" alt="Rincón de lectura con sillón y plantas colgantes" loading="lazy">
+    </div>
+    <div class="story-text">
+      <span class="eyebrow" data-t="st_eye">Nuestra historia</span>
+      <h2 data-t="st_title">Una casa vieja, mucha luz y una cafetera.</h2>
+      <p data-t="st_p1">Folha & Grão nació en 2019 en una casona de esquina en Vila Madalena. Abrimos las ventanas, llenamos todo de plantas y armamos la barra donde antes estaba la cocina.</p>
+      <p data-t="st_p2">Hoy tostamos nuestro propio café, horneamos todo lo que servimos y seguimos con la misma idea: que cada taza se tome con calma.</p>
+      <div class="stats">
+        <div><b>6</b><span data-t="st_s1">orígenes de café</span></div>
+        <div><b>30+</b><span data-t="st_s2">recetas de la casa</span></div>
+        <div><b>120</b><span data-t="st_s3">plantas en el salón</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu" id="menu">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow" data-t="m_eye">Menú</span>
+        <h2 data-t="m_title">Para tomar, para picar, para quedarse.</h2>
+        <p data-t="m_lead">Elegí una categoría. Todo lo que tiene leche se puede pedir con bebida de avena o almendras.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Categorías del menú" id="tabs"></div>
+      <div class="menu-body">
+        <div class="menu-photo"><img id="menuImg" src="img/cafes.jpg" alt="" loading="lazy"></div>
+        <div>
+          <ul class="items" id="items" role="tabpanel"></ul>
+          <p class="menu-note" data-t="m_note"><span class="tag v">Veg</span> vegetariano · <span class="tag h">Casa</span> favorito de la casa · Precios en reales.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap space" id="espacio">
+    <div class="sec-head">
+      <span class="eyebrow" data-t="e_eye">El espacio</span>
+      <h2 data-t="e_title">Adentro, sol. Afuera, jardín.</h2>
+      <p data-t="e_lead">Mesas grandes para trabajar, rincones para leer y una terraza con luces para la tarde.</p>
+    </div>
+    <div class="gallery">
+      <figure class="g1"><img src="img/hero.jpg" alt="Salón interior con ventanales y plantas" loading="lazy"><figcaption data-t="g1">Salón</figcaption></figure>
+      <figure class="g2"><img src="img/terraza.jpg" alt="Terraza con luces colgantes y plantas" loading="lazy"><figcaption data-t="g2">Terraza</figcaption></figure>
+      <figure class="g3"><img src="img/rincon.jpg" alt="Rincón de lectura" loading="lazy"><figcaption data-t="g3">Rincón de lectura</figcaption></figure>
+      <figure class="g4"><img src="img/fachada.jpg" alt="Fachada de la cafetería con toldo verde" loading="lazy"><figcaption data-t="g4">Fachada</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="wrap visit" id="visita">
+    <div class="visit-card">
+      <img src="img/fachada.jpg" alt="Fachada de Folha & Grão con mesas en la vereda" loading="lazy">
+      <div class="visit-info">
+        <span class="eyebrow" data-t="v_eye">Visitanos</span>
+        <h2 data-t="v_title">Te esperamos con la taza lista.</h2>
+        <p class="addr">Rua Fradique Coutinho, 1120 · Vila Madalena, São Paulo</p>
+        <ul class="hours" id="hours"></ul>
+        <a class="btn btn-ghost" href="#visita" data-t="v_cta">Reservar una mesa</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Folha & Grão · <span data-t="f_demo">Proyecto demo, fotos creadas con IA.</span></span>
+    <span><span data-t="f_by">Diseño:</span> <a href="../">STUDIO NIKKI</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const T = {
+    es:{nav1:"Nosotros",nav2:"Menú",nav3:"El espacio",nav4:"Visitanos",
+      h_eye:"Café de especialidad · São Paulo",h_title:"Café con luz, plantas y algo rico al lado.",
+      h_lead:"Granos de pequeños productores, tostados por nosotros, dulces horneados cada mañana y salados para quedarse un rato más.",
+      h_cta1:"Ver el menú",h_cta2:"Cómo llegar",open:"Abierto ahora · hasta las",closed:"Cerrado · abrimos",
+      s1h:"Tostado de la casa",s1p:"Cafés de Minas Gerais, Espírito Santo y la Mantiqueira, tostados cada semana.",
+      s2h:"Horneado cada mañana",s2p:"Croissants, tortas y panes salen del horno antes de abrir la puerta.",
+      s3h:"Más de 120 plantas",s3p:"Un salón con sol todo el día y una terraza verde para trabajar o charlar.",
+      st_eye:"Nuestra historia",st_title:"Una casa vieja, mucha luz y una cafetera.",
+      st_p1:"Folha & Grão nació en 2019 en una casona de esquina en Vila Madalena. Abrimos las ventanas, llenamos todo de plantas y armamos la barra donde antes estaba la cocina.",
+      st_p2:"Hoy tostamos nuestro propio café, horneamos todo lo que servimos y seguimos con la misma idea: que cada taza se tome con calma.",
+      st_s1:"orígenes de café",st_s2:"recetas de la casa",st_s3:"plantas en el salón",
+      m_eye:"Menú",m_title:"Para tomar, para picar, para quedarse.",m_lead:"Elegí una categoría. Todo lo que tiene leche se puede pedir con bebida de avena o almendras.",
+      m_note:"<span class='tag v'>Veg</span> vegetariano · <span class='tag h'>Casa</span> favorito de la casa · Precios en reales.",
+      e_eye:"El espacio",e_title:"Adentro, sol. Afuera, jardín.",e_lead:"Mesas grandes para trabajar, rincones para leer y una terraza con luces para la tarde.",
+      g1:"Salón",g2:"Terraza",g3:"Rincón de lectura",g4:"Fachada",
+      v_eye:"Visitanos",v_title:"Te esperamos con la taza lista.",v_cta:"Reservar una mesa",
+      days:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],
+      f_demo:"Proyecto demo, fotos creadas con IA.",f_by:"Diseño:"},
+    pt:{nav1:"Sobre nós",nav2:"Cardápio",nav3:"O espaço",nav4:"Visite",
+      h_eye:"Café especial · São Paulo",h_title:"Café com luz, plantas e algo gostoso do lado.",
+      h_lead:"Grãos de pequenos produtores, torrados por nós, doces assados toda manhã e salgados para ficar mais um pouco.",
+      h_cta1:"Ver o cardápio",h_cta2:"Como chegar",open:"Aberto agora · até",closed:"Fechado · abrimos",
+      s1h:"Torra da casa",s1p:"Cafés de Minas Gerais, Espírito Santo e da Mantiqueira, torrados toda semana.",
+      s2h:"Assado toda manhã",s2p:"Croissants, bolos e pães saem do forno antes de abrirmos a porta.",
+      s3h:"Mais de 120 plantas",s3p:"Um salão com sol o dia todo e um quintal verde para trabalhar ou conversar.",
+      st_eye:"Nossa história",st_title:"Uma casa antiga, muita luz e uma cafeteira.",
+      st_p1:"O Folha & Grão nasceu em 2019 num casarão de esquina na Vila Madalena. Abrimos as janelas, enchemos tudo de plantas e montamos o balcão onde antes era a cozinha.",
+      st_p2:"Hoje torramos nosso próprio café, assamos tudo o que servimos e seguimos com a mesma ideia: que cada xícara seja tomada com calma.",
+      st_s1:"origens de café",st_s2:"receitas da casa",st_s3:"plantas no salão",
+      m_eye:"Cardápio",m_title:"Para beber, para beliscar, para ficar.",m_lead:"Escolha uma categoria. Tudo que leva leite pode ser pedido com bebida de aveia ou amêndoas.",
+      m_note:"<span class='tag v'>Veg</span> vegetariano · <span class='tag h'>Casa</span> favorito da casa · Preços em reais.",
+      e_eye:"O espaço",e_title:"Dentro, sol. Fora, jardim.",e_lead:"Mesas grandes para trabalhar, cantinhos para ler e um quintal com luzinhas para o fim da tarde.",
+      g1:"Salão",g2:"Quintal",g3:"Cantinho de leitura",g4:"Fachada",
+      v_eye:"Visite",v_title:"Esperamos você com a xícara pronta.",v_cta:"Reservar uma mesa",
+      days:["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"],
+      f_demo:"Projeto demo, fotos criadas com IA.",f_by:"Design:"},
+    en:{nav1:"About",nav2:"Menu",nav3:"The space",nav4:"Visit",
+      h_eye:"Specialty coffee · São Paulo",h_title:"Coffee with light, plants and something good on the side.",
+      h_lead:"Beans from small farms, roasted by us, pastries baked every morning and savory plates worth staying for.",
+      h_cta1:"See the menu",h_cta2:"Find us",open:"Open now · until",closed:"Closed · we open",
+      s1h:"Roasted in house",s1p:"Coffees from Minas Gerais, Espírito Santo and the Mantiqueira hills, roasted every week.",
+      s2h:"Baked every morning",s2p:"Croissants, cakes and breads come out of the oven before we open the door.",
+      s3h:"120+ plants",s3p:"A sunlit room all day long and a green patio for working or catching up.",
+      st_eye:"Our story",st_title:"An old house, lots of light and an espresso machine.",
+      st_p1:"Folha & Grão opened in 2019 in a corner house in Vila Madalena. We opened the windows, filled it with plants and built the bar where the kitchen used to be.",
+      st_p2:"Today we roast our own coffee, bake everything we serve and keep the same idea: every cup deserves to be enjoyed slowly.",
+      st_s1:"coffee origins",st_s2:"house recipes",st_s3:"plants inside",
+      m_eye:"Menu",m_title:"Something to sip, something to share, a reason to stay.",m_lead:"Pick a category. Anything with milk can be made with oat or almond milk.",
+      m_note:"<span class='tag v'>Veg</span> vegetarian · <span class='tag h'>House</span> house favorite · Prices in Brazilian reais.",
+      e_eye:"The space",e_title:"Sun inside. Garden outside.",e_lead:"Big tables for working, corners for reading and a patio with string lights for the evening.",
+      g1:"Main room",g2:"Patio",g3:"Reading corner",g4:"Facade",
+      v_eye:"Visit",v_title:"Your cup is waiting.",v_cta:"Book a table",
+      days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      f_demo:"Demo project, AI-generated photos.",f_by:"Design:"}
+  };
+
+  // Menú: [nombre, precio, {es,pt,en}, etiqueta]
+  const CATS = [
+    {id:"cafes", img:"img/cafes.jpg", label:{es:"Cafés",pt:"Cafés",en:"Coffee"}, items:[
+      ["Espresso",7,{es:"Doble, de nuestro blend Mantiqueira. Notas de chocolate y caramelo.",pt:"Duplo, do nosso blend Mantiqueira. Notas de chocolate e caramelo.",en:"Double shot of our Mantiqueira blend. Chocolate and caramel notes."}],
+      ["Cortado",9,{es:"Espresso con un toque de leche texturizada.",pt:"Espresso com um toque de leite vaporizado.",en:"Espresso with a splash of steamed milk."}],
+      ["Cappuccino",14,{es:"Espresso, leche cremosa y latte art.",pt:"Espresso, leite cremoso e latte art.",en:"Espresso, silky milk and latte art."}],
+      ["Flat white",15,{es:"Doble ristretto y una capa fina de leche.",pt:"Ristretto duplo e uma camada fina de leite.",en:"Double ristretto with a thin layer of milk."}],
+      ["Coado V60",16,{es:"Filtrado a mano con el origen de la semana.",pt:"Coado na hora com a origem da semana.",en:"Hand-brewed pour over with the coffee of the week."},"h"],
+      ["Mocha de la casa",18,{es:"Espresso, chocolate 70% y leche. Con canela si querés.",pt:"Espresso, chocolate 70% e leite. Com canela se quiser.",en:"Espresso, 70% chocolate and milk. Cinnamon on request."}],
+      ["Latte de doce de leite",19,{es:"Nuestro latte con dulce de leche casero.",pt:"Nosso latte com doce de leite caseiro.",en:"Our latte with homemade dulce de leche."},"h"],
+      ["Matcha latte",19,{es:"Matcha ceremonial batido con leche o avena.",pt:"Matcha cerimonial batido com leite ou aveia.",en:"Ceremonial matcha whisked with milk or oat."}]
+    ]},
+    {id:"frios", img:"img/frios.jpg", label:{es:"Fríos",pt:"Gelados",en:"Iced"}, items:[
+      ["Cold brew",16,{es:"18 horas en frío. Suave y con notas frutales.",pt:"18 horas de extração a frio. Suave e frutado.",en:"Steeped for 18 hours. Smooth and fruity."}],
+      ["Espresso tônica",17,{es:"Espresso sobre tónica, naranja y hielo.",pt:"Espresso sobre tônica, laranja e gelo.",en:"Espresso over tonic, orange and ice."},"h"],
+      ["Iced latte",16,{es:"Doble espresso, leche fría y hielo.",pt:"Espresso duplo, leite gelado e gelo.",en:"Double espresso, cold milk and ice."}],
+      ["Affogato",19,{es:"Helado de vainilla con un espresso caliente encima.",pt:"Sorvete de baunilha com espresso quente por cima.",en:"Vanilla ice cream drowned in hot espresso."}],
+      ["Limonada de hierbabuena",13,{es:"Limón, menta del jardín y un poco de miel.",pt:"Limão, hortelã do quintal e um pouco de mel.",en:"Lemon, garden mint and a touch of honey."},"v"],
+      ["Chá gelado de hibisco",12,{es:"Hibisco, manzana y canela, sin azúcar.",pt:"Hibisco, maçã e canela, sem açúcar.",en:"Hibiscus, apple and cinnamon, unsweetened."},"v"]
+    ]},
+    {id:"dulces", img:"img/dulces.jpg", label:{es:"Dulces",pt:"Doces",en:"Sweets"}, items:[
+      ["Alfajor de doce de leite",11,{es:"Dos tapitas de maicena, dulce de leche casero y coco rallado.",pt:"Duas bolachas de amido de milho, doce de leite caseiro e coco ralado.",en:"Two cornstarch cookies, homemade dulce de leche and grated coconut."},"h"],
+      ["Bolo inglês de chocolate",14,{es:"Budín húmedo con glaseado de chocolate. Por porción.",pt:"Bolo inglês úmido com cobertura de chocolate. Por fatia.",en:"Moist pound cake with chocolate glaze. Per slice."},"v"],
+      ["Croissant de manteiga",12,{es:"Hojaldrado, con manteca francesa. Sale a las 8 h.",pt:"Folhado, com manteiga francesa. Sai às 8 h.",en:"Flaky, made with French butter. Out at 8 am."},"v"],
+      ["Cinnamon roll",15,{es:"Masa suave, canela y glaseado de queso crema.",pt:"Massa macia, canela e cobertura de cream cheese.",en:"Soft dough, cinnamon and cream cheese frosting."},"h"],
+      ["Bolo de cenoura",13,{es:"Torta de zanahoria con cobertura de chocolate.",pt:"Bolo de cenoura com cobertura de chocolate.",en:"Carrot cake with chocolate topping."},"v"],
+      ["Tarta de limón",16,{es:"Crema de limón siciliano y merengue tostado.",pt:"Creme de limão-siciliano e merengue maçaricado.",en:"Lemon curd with torched meringue."},"v"],
+      ["Cheesecake de goiabada",18,{es:"Cremoso, con mermelada de guayaba de la casa.",pt:"Cremoso, com goiabada da casa.",en:"Creamy, with house guava jam."},"h"],
+      ["Brownie com nozes",12,{es:"Chocolate 70% y nueces. Pedilo con helado (+R$ 6).",pt:"Chocolate 70% e nozes. Peça com sorvete (+R$ 6).",en:"70% chocolate and walnuts. Add ice cream (+R$ 6)."},"v"],
+      ["Brigadeiros (3 un.)",10,{es:"Chocolate belga, pistacho y café.",pt:"Chocolate belga, pistache e café.",en:"Belgian chocolate, pistachio and coffee."}],
+      ["Cookie de chocolate",9,{es:"Crocante afuera, blando adentro, con flor de sal.",pt:"Crocante por fora, macio por dentro, com flor de sal.",en:"Crisp outside, chewy inside, with sea salt."},"v"]
+    ]},
+    {id:"salados", img:"img/salados.jpg", label:{es:"Salados",pt:"Salgados",en:"Savory"}, items:[
+      ["Pão de queijo (4 un.)",12,{es:"Con queso de Minas curado, recién horneado.",pt:"Com queijo canastra, saindo do forno.",en:"Made with aged Minas cheese, fresh from the oven."},"h"],
+      ["Tostada de palta",29,{es:"Pan de masa madre, palta, huevo poché y semillas.",pt:"Pão de fermentação natural, abacate, ovo pochê e sementes.",en:"Sourdough, avocado, poached egg and seeds."},"v"],
+      ["Croissant presunto e queijo",22,{es:"Jamón cocido, queso gruyère y bechamel.",pt:"Presunto, queijo gruyère e bechamel.",en:"Ham, gruyère and béchamel."}],
+      ["Quiche do dia",26,{es:"Pregunta por la de hoy. Con ensalada verde.",pt:"Pergunte qual é a de hoje. Acompanha salada verde.",en:"Ask for today's flavor. Served with a green salad."}],
+      ["Misto quente na chapa",18,{es:"El clásico de São Paulo, en pan de molde de la casa.",pt:"O clássico paulistano, no pão de forma da casa.",en:"The São Paulo classic on our own sandwich bread."}],
+      ["Sanduíche de frango",32,{es:"Pollo desmenuzado, pesto, rúcula y tomate en ciabatta.",pt:"Frango desfiado, pesto, rúcula e tomate na ciabatta.",en:"Pulled chicken, pesto, arugula and tomato on ciabatta."}],
+      ["Ovos mexidos",24,{es:"Huevos de campo, manteca y tostadas de masa madre.",pt:"Ovos caipiras, manteiga e torradas de fermentação natural.",en:"Free-range eggs, butter and sourdough toast."},"v"],
+      ["Bowl da horta",34,{es:"Quinoa, vegetales asados, hummus y huevo.",pt:"Quinoa, legumes assados, homus e ovo.",en:"Quinoa, roasted vegetables, hummus and egg."},"v"]
+    ]}
+  ];
+  const HOURS = [[8,18],[7,19],[7,19],[7,19],[7,19],[7,21],[8,21]]; // dom..sáb
+
+  let lang="es", cat=0;
+  const tabs=document.getElementById("tabs"), items=document.getElementById("items"), menuImg=document.getElementById("menuImg");
+  const brl=n=>"R$ "+n.toFixed(2).replace(".",",");
+  const tagTxt={es:{v:"Veg",h:"Casa"},pt:{v:"Veg",h:"Casa"},en:{v:"Veg",h:"House"}};
+  const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  function renderMenu(){
+    tabs.innerHTML="";
+    CATS.forEach((c,i)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.role="tab"; b.textContent=c.label[lang];
+      b.setAttribute("aria-selected",String(i===cat));
+      b.addEventListener("click",()=>{cat=i;renderMenu();});
+      tabs.appendChild(b);
+    });
+    const c=CATS[cat];
+    menuImg.src=c.img; menuImg.alt=c.label[lang];
+    items.innerHTML=c.items.map(([n,p,d,t])=>`<li class="item"><div class="item-top"><h3>${esc(n)}${t?` <span class="tag ${t}">${tagTxt[lang][t]}</span>`:""}</h3><span class="dots"></span><span class="price">${brl(p)}</span></div><p>${esc(d[lang])}</p></li>`).join("");
+  }
+
+  function renderHours(){
+    const now=new Date(), d=now.getDay(), h=now.getHours()+now.getMinutes()/60, L=T[lang];
+    const order=[1,2,3,4,5,6,0];
+    document.getElementById("hours").innerHTML=order.map(i=>`<li class="${i===d?"today":""}"><span>${L.days[i]}</span><span>${HOURS[i][0]} h – ${HOURS[i][1]} h</span></li>`).join("");
+    const [o,c]=HOURS[d], isOpen=h>=o&&h<c;
+    const pill=document.getElementById("openPill");
+    pill.classList.toggle("closed",!isOpen);
+    let next=HOURS[d][0]; if(h>=c) next=HOURS[(d+1)%7][0];
+    document.getElementById("openText").textContent=isOpen?`${L.open} ${c} h`:`${L.closed} ${next} h`;
+  }
+
+  function setLang(l){
+    if(!T[l]) l="es"; lang=l;
+    document.documentElement.lang=l==="pt"?"pt-BR":l;
+    document.querySelectorAll("[data-t]").forEach(e=>{const v=T[l][e.dataset.t]; if(v!=null){ if(e.dataset.t==="m_note") e.innerHTML=v; else e.textContent=v; }});
+    document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===l)));
+    renderMenu(); renderHours();
+    try{localStorage.setItem("lang",l);}catch(e){}
+  }
+  document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+  let saved=null; try{saved=localStorage.getItem("lang");}catch(e){}
+  const nav=(navigator.language||"es").slice(0,2);
+  setLang(saved||(T[nav]?nav:"es"));
+})();
+</script>
+</body>
+</html>
