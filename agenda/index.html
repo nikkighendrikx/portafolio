@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Consultório Acolher · Demonstração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..500,100&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: uma única coluna estreita e centrada, como um bilhete; a agenda é um cartão macio, o painel aparece só para a dona. */
+:root{
+  --bg:#fffafb; --surface:#ffffff; --blush:#fcf0f3; --petal:#f6dbe2; --petal-2:#ebbfcb;
+  --ink:#43303a; --muted:#8a7480; --accent:#a8546c; --accent-ink:#ffffff; --line:#f2e3e8;
+  --ok:#3f7d64; --warn:#9a5b1f;
+  --f-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shadow:0 24px 60px -36px rgba(140,60,90,.35);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1d1518;--surface:#251b1f;--blush:#2c2025;--petal:#4a2f39;--petal-2:#6e4352;
+  --ink:#f7e9ee;--muted:#c2a9b3;--accent:#f0a9bc;--accent-ink:#2a1219;--line:#3a2a30;--ok:#8fd3b4;--warn:#f0c08a;
+  --shadow:0 24px 60px -36px rgba(0,0,0,.8);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1d1518;--surface:#251b1f;--blush:#2c2025;--petal:#4a2f39;--petal-2:#6e4352;
+  --ink:#f7e9ee;--muted:#c2a9b3;--accent:#f0a9bc;--accent-ink:#2a1219;--line:#3a2a30;--ok:#8fd3b4;--warn:#f0c08a;
+  --shadow:0 24px 60px -36px rgba(0,0,0,.8);color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:var(--f-display);font-variation-settings:"SOFT" 100;font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.ph{background:var(--petal);border-radius:6px;padding:0 .35em;-webkit-box-decoration-break:clone;box-decoration-break:clone;overflow-wrap:anywhere}
+
+/* boas-vindas */
+.welcome{padding-block:clamp(48px,9vw,88px) 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.mark{width:56px;height:56px;border-radius:50%;background:var(--petal);display:grid;place-items:center}
+.welcome h1{font-size:clamp(2rem,6vw,2.8rem)}
+.welcome p{color:var(--muted);max-width:44ch}
+.who{font-size:.92rem;color:var(--muted)}
+
+/* cartão da agenda */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(20px,4vw,32px);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:26px;min-width:0}
+.step{display:flex;flex-direction:column;gap:12px;min-width:0}
+.step-h{display:flex;align-items:baseline;gap:10px}
+.step-h span{font:400 .95rem var(--f-display);color:var(--accent)}
+.step-h h2{font-size:1.2rem}
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scroll-snap-type:x mandatory}
+.day{flex:none;scroll-snap-align:start;width:64px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:16px;padding:10px 4px;cursor:pointer;text-align:center;font:500 .78rem var(--f-body);display:flex;flex-direction:column;gap:1px;transition:background .15s}
+.day b{font:400 1.35rem var(--f-display)}
+.day:hover{background:var(--blush)}
+.day[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.day:disabled{opacity:.35;cursor:default;background:transparent}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;font-variant-numeric:tabular-nums}
+.slot{border:1.5px solid var(--petal-2);background:transparent;color:var(--ink);border-radius:14px;padding:10px 4px;cursor:pointer;font:500 .98rem var(--f-body);transition:background .15s}
+.slot:hover{background:var(--blush)}
+.slot[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.slot.taken{border-style:dashed;border-color:var(--line);color:var(--muted);text-decoration:line-through;cursor:not-allowed;background:transparent}
+.empty{color:var(--muted);font-size:.95rem}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fields .full{grid-column:1/-1}
+@media (max-width:520px){.fields{grid-template-columns:1fr}}
+label{font-size:.88rem;color:var(--muted);display:block;margin-bottom:5px}
+input,select,textarea{width:100%;font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:11px 14px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--petal)}
+textarea{min-height:70px;resize:vertical}
+.seg{display:flex;gap:8px}
+.seg label{flex:1;margin:0;border:1.5px solid var(--line);border-radius:14px;padding:10px;text-align:center;cursor:pointer;color:var(--ink);font-size:.95rem}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg label:has(input:checked){border-color:var(--accent);background:var(--blush);color:var(--accent)}
+.seg label:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;font:600 1rem var(--f-body);padding:15px 26px;border-radius:999px;background:var(--accent);color:var(--accent-ink);width:100%;transition:opacity .15s}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.small{width:auto;padding:9px 16px;font-size:.88rem}
+.pick{font-family:var(--f-display);font-size:1.1rem;text-align:center;color:var(--accent);min-height:1.6em}
+.status{font-size:.95rem;border-radius:14px;padding:12px 14px;text-align:center}
+.status.ok{background:color-mix(in srgb,var(--ok) 13%,transparent);color:var(--ok)}
+.status.err{background:color-mix(in srgb,var(--warn) 13%,transparent);color:var(--warn)}
+.note{font-size:.84rem;color:var(--muted);text-align:center}
+.mine{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.mine h3{font-size:1.05rem;text-align:center}
+.mine-item{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--blush);border-radius:14px;padding:10px 14px;font-size:.95rem}
+.linkbtn{background:none;border:0;color:var(--accent);font:600 .88rem var(--f-body);cursor:pointer;text-decoration:underline;padding:4px}
+.mode{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.8rem;color:var(--muted);margin-top:14px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--petal-2)}
+.dot.live{background:var(--ok)}
+
+/* painel */
+#painel{padding-block:56px;margin-top:56px;border-top:1px dashed var(--petal-2)}
+#painel .wrap{max-width:900px;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.admin-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}
+@media (max-width:820px){.admin-grid{grid-template-columns:1fr}}
+.admin-grid .card{gap:16px}
+.weekdays{display:flex;flex-wrap:wrap;gap:6px}
+.weekdays label{margin:0;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;font-size:.88rem;color:var(--ink)}
+.weekdays label:has(input:checked){background:var(--petal);border-color:var(--petal-2)}
+.weekdays input{position:absolute;opacity:0;width:1px;height:1px}
+.weekdays label:has(input:focus-visible){outline:3px solid var(--accent)}
+.row3{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.row3 label{white-space:nowrap}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+td .sub{font-size:.85rem;color:var(--muted)}
+.tag{display:inline-block;font-size:.74rem;padding:2px 8px;border-radius:999px;background:var(--petal);white-space:nowrap}
+.ai-out{white-space:pre-wrap;background:var(--blush);border-radius:14px;padding:16px;font-size:.95rem}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+
+footer{padding-block:40px 32px;text-align:center;font-size:.84rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<main>
+  <div class="wrap" style="padding-top:20px"><a href="../" style="color:var(--accent);font-size:.9rem;font-weight:600;text-decoration:none">← Voltar ao portfólio</a></div>
+  <section class="wrap welcome">
+    <div class="mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 30 30"><path d="M9 17c2.5 4 9.5 4 12 0M11 12h.01M19 12h.01" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></div>
+    <h1>Que bom que você chegou.</h1>
+    <p>Escolha o dia e o horário que forem melhores para você. Sem pressa, sem troca de mensagens.</p>
+    <p class="who"><span class="ph">[Nome da Psicóloga]</span> · Psicóloga · CRP <span class="ph">[00/00000]</span></p>
+  </section>
+
+  <section class="wrap" aria-labelledby="agendaT">
+    <h2 id="agendaT" style="position:absolute;left:-9999px">Agenda</h2>
+    <form class="card" id="bookForm" novalidate>
+      <div class="step">
+        <div class="step-h"><span>1</span><h2>Escolha o dia</h2></div>
+        <div class="days" id="days" role="group" aria-label="Dias"></div>
+      </div>
+      <div class="step">
+        <div class="step-h"><span>2</span><h2>Escolha o horário</h2></div>
+        <div class="slots" id="slots" role="group" aria-label="Horários"></div>
+      </div>
+      <div class="step">
+        <div class="step-h"><span>3</span><h2>Conte quem é você</h2></div>
+        <div class="fields">
+          <div><label for="fName">Seu nome</label><input id="fName" autocomplete="name" required></div>
+          <div><label for="fContact">WhatsApp ou e-mail</label><input id="fContact" autocomplete="tel" required></div>
+          <div class="full seg" role="radiogroup" aria-label="Formato da sessão">
+            <label><input type="radio" name="mod" id="modOnline" value="Online" checked>Online</label>
+            <label><input type="radio" name="mod" id="modPres" value="Presencial">Presencial</label>
+          </div>
+          <div class="full"><label for="fFirst">É sua primeira sessão?</label>
+            <select id="fFirst"><option value="sim">Sim, é a primeira vez</option><option value="nao">Não, já faço acompanhamento</option></select></div>
+          <div class="full"><label for="fNote">Quer deixar algum recado? (opcional)</label><textarea id="fNote" placeholder="Fique à vontade. Pode ser só um “oi”."></textarea></div>
+        </div>
+      </div>
+      <p class="pick" id="pick" aria-live="polite"></p>
+      <button class="btn" type="submit" id="bookBtn" disabled>Escolha um horário</button>
+      <div id="bookStatus" role="status" aria-live="polite"></div>
+      <p class="note">Só você e a psicóloga veem esses dados.</p>
+    </form>
+    <div class="mine" id="mine" hidden><h3>Suas sessões</h3><div id="mineList" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="mode"><span class="dot" id="modeDot"></span><span id="modeText">Conectando à agenda…</span></div>
+  </section>
+
+  <section id="painel" hidden aria-labelledby="painelT">
+    <div class="wrap">
+      <div><span class="eyebrow">Só você vê esta parte</span><h2 id="painelT" style="font-size:1.8rem;margin-top:6px">Painel da psicóloga</h2></div>
+      <div class="admin-grid">
+        <form class="card" id="cfgForm">
+          <h3 style="font-size:1.15rem">Disponibilidade</h3>
+          <div><span style="font-size:.88rem;color:var(--muted);display:block;margin-bottom:6px">Dias de atendimento</span><div class="weekdays" id="wdays"></div></div>
+          <div class="row3">
+            <div><label for="cStart">Início</label><input id="cStart" type="time"></div>
+            <div><label for="cEnd">Fim</label><input id="cEnd" type="time"></div>
+            <div><label for="cDur">Sessão (min)</label><input id="cDur" type="number" min="20" max="120" step="5"></div>
+          </div>
+          <div><label for="cDays">Dias visíveis na agenda</label><input id="cDays" type="number" min="7" max="60"></div>
+          <button class="btn" type="submit">Salvar disponibilidade</button>
+          <div id="cfgStatus" role="status" aria-live="polite"></div>
+        </form>
+        <div class="card">
+          <div class="panel-head"><h3 style="font-size:1.15rem">Próximas sessões</h3><button class="btn small" type="button" id="aiWeek">Organizar a semana com IA</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Quando</th><th>Paciente</th><th>Formato</th><th></th></tr></thead><tbody id="adminRows"></tbody></table></div>
+          <div id="aiWeekOut" hidden class="ai-out" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">Em caso de emergência, ligue 188 (CVV, 24h) ou 192 (SAMU).</footer>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const WD = ["dom","seg","ter","qua","qui","sex","sáb"];
+  const WDL = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+  const MO = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  const DEFAULT_CFG = { days:[1,2,3,4,5], start:"09:00", end:"19:00", duration:50, ahead:21 };
+  const S = { live:false, db:null, uid:null, owner:false, cfg:{...DEFAULT_CFG},
+    taken:new Set(), mine:[], all:[], selDay:null, selSlot:null, sample:null };
+
+  const pad = n => String(n).padStart(2,"0");
+  const dayKey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const slotId = (dk, hm) => `${dk}_${hm.replace(":","")}`;
+  const parseSlot = id => { const [dk,t]=id.split("_"); const [y,m,d]=dk.split("-").map(Number); return new Date(y,m-1,d,+t.slice(0,2),+t.slice(2)); };
+  const fmtSlot = id => { const d=parseSlot(id); return `${WDL[d.getDay()]}, ${d.getDate()} de ${MO[d.getMonth()]} às ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+  const toMin = hm => { const [h,m]=hm.split(":").map(Number); return h*60+m; };
+  const el = (tag, props={}, ...kids) => { const e=document.createElement(tag); Object.assign(e,props); kids.forEach(k=>e.append(k)); return e; };
+  const setStatus = (box, kind, text) => box.replaceChildren(text ? el("div",{className:"status "+kind,textContent:text}) : "");
+
+  function slotsFor(date){
+    const c=S.cfg; if(!c.days.includes(date.getDay())) return [];
+    const out=[], step=Math.max(60, Math.ceil(c.duration/30)*30), now=Date.now();
+    for(let m=toMin(c.start); m+c.duration<=toMin(c.end); m+=step){
+      const hm=`${pad(Math.floor(m/60))}:${pad(m%60)}`, id=slotId(dayKey(date),hm);
+      if(parseSlot(id).getTime() < now + 2*3600e3) continue;
+      out.push({id, hm, taken:S.taken.has(id)});
+    }
+    return out;
+  }
+  function allDays(){
+    const out=[], t=new Date(); t.setHours(0,0,0,0);
+    for(let i=0;i<S.cfg.ahead;i++){ const d=new Date(t); d.setDate(t.getDate()+i); out.push(d); }
+    return out;
+  }
+  function freeSlots(){ const out=[]; for(const d of allDays()) for(const s of slotsFor(d)) if(!s.taken) out.push(s.id); return out; }
+
+  // ---------- agenda ----------
+  function drawDays(){
+    const box=$("#days"); box.replaceChildren();
+    const days=allDays();
+    if(!S.selDay || !days.some(d=>dayKey(d)===S.selDay)){
+      const first=days.find(d=>slotsFor(d).some(s=>!s.taken)); S.selDay=first?dayKey(first):dayKey(days[0]);
+    }
+    for(const d of days){
+      const sl=slotsFor(d), free=sl.filter(s=>!s.taken).length, k=dayKey(d);
+      const b=el("button",{type:"button",className:"day",disabled:!free},
+        el("span",{textContent:WD[d.getDay()]}), el("b",{textContent:d.getDate()}), el("span",{textContent:MO[d.getMonth()]}));
+      b.setAttribute("aria-pressed", String(k===S.selDay));
+      b.setAttribute("aria-label", `${WDL[d.getDay()]}, ${d.getDate()} de ${MO[d.getMonth()]}: ${free? free+" horários livres" : sl.length? "sem vagas":"sem atendimento"}`);
+      b.onclick=()=>{ S.selDay=k; renderAgenda(); };
+      box.append(b);
+    }
+  }
+  function drawSlots(){
+    const box=$("#slots"); box.replaceChildren();
+    const [y,m,d]=S.selDay.split("-").map(Number); const sl=slotsFor(new Date(y,m-1,d));
+    if(!sl.length){ box.append(el("p",{className:"empty",textContent:"Não há horários neste dia."})); return; }
+    for(const s of sl){
+      const b=el("button",{type:"button",className:"slot"+(s.taken?" taken":""),textContent:s.hm,disabled:s.taken});
+      b.setAttribute("aria-pressed", String(s.id===S.selSlot));
+      b.setAttribute("aria-label", s.taken? `${s.hm}, ocupado` : `${s.hm}, livre`);
+      b.onclick=()=>{ S.selSlot=s.id; renderAgenda(); };
+      box.append(b);
+    }
+  }
+  function roving(box){
+    const items=[...box.querySelectorAll("button:not([disabled])")];
+    const cur=items.find(b=>b.getAttribute("aria-pressed")==="true")||items[0];
+    items.forEach(b=>b.tabIndex = b===cur?0:-1);
+  }
+  function renderAgenda(){
+    const a=document.activeElement, inDays=$("#days").contains(a), inSlots=$("#slots").contains(a), txt=a&&a.textContent;
+    if(S.selSlot && S.taken.has(S.selSlot)) S.selSlot=null;
+    drawDays(); drawSlots(); roving($("#days")); roving($("#slots"));
+    if(inDays){ const b=$("#days").querySelector('[aria-pressed="true"]'); b&&b.focus(); }
+    if(inSlots){ const b=[...$("#slots").querySelectorAll("button")].find(x=>x.textContent===txt)||$("#slots").querySelector('[tabindex="0"]'); b&&b.focus(); }
+    $("#pick").textContent = S.selSlot ? fmtSlot(S.selSlot) : "";
+    $("#bookBtn").disabled = !S.selSlot;
+    $("#bookBtn").textContent = S.selSlot ? "Confirmar sessão" : "Escolha um horário";
+  }
+  ["#days","#slots"].forEach(sel=>{
+    const box=$(sel);
+    box.addEventListener("keydown",e=>{
+      const items=[...box.querySelectorAll("button:not([disabled])")], i=items.indexOf(document.activeElement);
+      if(i<0) return;
+      const dir={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key]; if(!dir && e.key!=="Home" && e.key!=="End") return;
+      e.preventDefault();
+      const n = e.key==="Home"?0 : e.key==="End"?items.length-1 : (i+dir+items.length)%items.length;
+      items.forEach(b=>b.tabIndex=-1); items[n].tabIndex=0; items[n].focus();
+    });
+  });
+
+  function renderMine(){
+    const list=$("#mineList"); list.replaceChildren();
+    const up=S.mine.filter(a=>parseSlot(a.slot).getTime()>Date.now()).sort((a,b)=>a.slot.localeCompare(b.slot));
+    $("#mine").hidden=!up.length;
+    for(const a of up){
+      const c=el("button",{type:"button",className:"linkbtn",textContent:"Cancelar"});
+      c.onclick=()=>cancel(a.slot, S.uid, c);
+      list.append(el("div",{className:"mine-item"}, el("span",{textContent:`${fmtSlot(a.slot)} · ${a.modality}`}), c));
+    }
+  }
+
+  $("#bookForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const st=$("#bookStatus"), name=$("#fName").value.trim(), contact=$("#fContact").value.trim();
+    if(!S.selSlot) return setStatus(st,"err","Escolha um horário acima.");
+    if(!name){ $("#fName").focus(); return setStatus(st,"err","Escreva seu nome, para a psicóloga saber quem vem."); }
+    if(!contact){ $("#fContact").focus(); return setStatus(st,"err","Deixe um WhatsApp ou e-mail para ela confirmar com você."); }
+    const appt={ slot:S.selSlot, name, contact, modality:document.querySelector('input[name="mod"]:checked').value,
+      first:$("#fFirst").value==="sim", note:$("#fNote").value.trim().slice(0,500), createdAt:new Date().toISOString() };
+    $("#bookBtn").disabled=true;
+    try{
+      if(S.live){
+        const ref=S.db.doc("slots/"+appt.slot);
+        if((await ref.get()).exists) throw {code:"taken"};
+        await ref.set({taken:true, at:appt.createdAt});
+        await S.db.doc("bookings/"+S.uid).set({appts:[...S.mine.filter(a=>a.slot!==appt.slot), appt]});
+      } else {
+        S.taken.add(appt.slot); S.mine.push(appt); S.all.push({...appt,uid:"demo"});
+      }
+      S.selSlot=null; $("#fNote").value=""; renderAll();
+      setStatus(st,"ok",`Sessão marcada para ${fmtSlot(appt.slot)}. Até lá! A psicóloga vai confirmar com você por ${contact}.`);
+    }catch(err){
+      $("#bookBtn").disabled=false;
+      if(err && err.code==="taken"){ S.taken.add(appt.slot); renderAgenda(); setStatus(st,"err","Esse horário acabou de ser reservado por outra pessoa. Escolha outro, por favor."); }
+      else if(err && err.code==="not_granted") setStatus(st,"err","Sua conta só pode visualizar esta página. Peça à psicóloga para liberar o agendamento.");
+      else setStatus(st,"err","Não consegui salvar agora. Verifique sua conexão e tente de novo.");
+    }
+  });
+
+  async function cancel(slot, uid, btn){
+    btn.disabled=true;
+    try{
+      if(S.live){
+        const ref=S.db.doc("bookings/"+uid), snap=await ref.get();
+        await ref.set({appts:((snap.data()||{}).appts||[]).filter(a=>a.slot!==slot)});
+        await S.db.doc("slots/"+slot).delete();
+      } else {
+        S.taken.delete(slot); S.mine=S.mine.filter(a=>a.slot!==slot); S.all=S.all.filter(a=>a.slot!==slot); renderAll();
+      }
+    }catch(e){ btn.disabled=false; btn.textContent="Não foi possível cancelar"; }
+  }
+
+  // ---------- painel ----------
+  function renderAdmin(){
+    if(!S.owner) return;
+    $("#painel").hidden=false;
+    const rows=$("#adminRows"); rows.replaceChildren();
+    const up=S.all.filter(a=>parseSlot(a.slot).getTime()>Date.now()-3600e3).sort((a,b)=>a.slot.localeCompare(b.slot));
+    if(!up.length) rows.append(el("tr",{},el("td",{colSpan:4,className:"sub",textContent:"Nenhuma sessão marcada ainda. Quando alguém reservar, aparece aqui."})));
+    for(const a of up){
+      const who=el("td",{}, el("div",{textContent:a.name}), el("div",{className:"sub",textContent:a.contact}));
+      if(a.note) who.append(el("div",{className:"sub",textContent:"“"+a.note+"”"}));
+      const fmt=el("td",{}, el("span",{className:"tag",textContent:a.modality}));
+      if(a.first) fmt.append(" ", el("span",{className:"tag",textContent:"1ª sessão"}));
+      const c=el("button",{type:"button",className:"linkbtn",textContent:"Cancelar"}); c.onclick=()=>cancel(a.slot,a.uid,c);
+      rows.append(el("tr",{}, el("td",{textContent:fmtSlot(a.slot)}), who, fmt, el("td",{},c)));
+    }
+  }
+  function fillCfgForm(){
+    const w=$("#wdays"); w.replaceChildren();
+    [1,2,3,4,5,6,0].forEach(i=>{ const inp=el("input",{type:"checkbox",id:"wd"+i,value:i,checked:S.cfg.days.includes(i)}); w.append(el("label",{htmlFor:"wd"+i},inp,WD[i])); });
+    $("#cStart").value=S.cfg.start; $("#cEnd").value=S.cfg.end; $("#cDur").value=S.cfg.duration; $("#cDays").value=S.cfg.ahead;
+  }
+  $("#cfgForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const cfg={ days:[...document.querySelectorAll("#wdays input:checked")].map(i=>+i.value),
+      start:$("#cStart").value||"09:00", end:$("#cEnd").value||"18:00",
+      duration:Math.min(120,Math.max(20,+$("#cDur").value||50)), ahead:Math.min(60,Math.max(7,+$("#cDays").value||21)) };
+    if(toMin(cfg.end)<=toMin(cfg.start)) return setStatus($("#cfgStatus"),"err","O horário de fim precisa ser depois do início.");
+    try{ if(S.live) await S.db.doc("config/agenda").set(cfg); else { S.cfg=cfg; renderAll(); }
+      setStatus($("#cfgStatus"),"ok","Disponibilidade salva. A agenda já mostra os novos horários."); }
+    catch(err){ setStatus($("#cfgStatus"),"err","Não consegui salvar. Tente de novo."); }
+  });
+
+  $("#aiWeek").addEventListener("click", async ()=>{
+    const out=$("#aiWeekOut"); out.hidden=false;
+    if(!S.sample){ out.textContent="Nesta demonstração a IA está desligada. Na versão completa, ela resume a semana da psicóloga: agenda dia a dia, primeiras sessões, recados dos pacientes e horários livres."; return; }
+    const end=Date.now()+7*864e5;
+    const week=S.all.filter(a=>{const t=parseSlot(a.slot).getTime(); return t>Date.now() && t<end;}).sort((a,b)=>a.slot.localeCompare(b.slot))
+      .map(a=>({quando:fmtSlot(a.slot), nome:a.name, formato:a.modality, primeira:a.first, recado:a.note||""}));
+    const free=freeSlots().filter(id=>parseSlot(id).getTime()<end).map(fmtSlot);
+    const prompt=`Você organiza a agenda de uma psicóloga. Em português, de forma breve e acolhedora, monte um resumo dos próximos 7 dias:
+1) Agenda dia a dia (horário, nome, formato; marque quem vem pela primeira vez).
+2) Pontos de atenção: primeiras sessões, recados deixados pelos pacientes, dias muito cheios.
+3) Horários livres agrupados por dia.
+Não faça avaliações clínicas. Texto simples, sem markdown.
+Sessões: ${JSON.stringify(week)}
+Horários livres: ${JSON.stringify(free)}`;
+    out.textContent="Organizando…"; $("#aiWeek").disabled=true;
+    try{ const r=await S.sample(prompt,{cache:false,onText:({text})=>{out.textContent=text;}}); out.textContent=r.text; }
+    catch(e){ out.textContent = e && e.code==="rate_limited" ? "Muitos pedidos seguidos. Tente em um minuto." : e && e.code==="not_granted" ? "A IA está desativada para esta página." : "Não consegui gerar o resumo agora."; }
+    finally{ $("#aiWeek").disabled=false; }
+  });
+
+  function renderAll(){ renderAgenda(); renderMine(); renderAdmin(); }
+  function setMode(live, text){ S.live=live; $("#modeDot").classList.toggle("live",live); $("#modeText").textContent=text; }
+
+  // ---------- início ----------
+  renderAll(); fillCfgForm();
+  (async ()=>{
+    const c=window.claude;
+    if(!c || !c.use){
+      setMode(false,"Demonstração: as reservas não são salvas.");
+      S.owner=true;
+      const f=freeSlots();
+      [[f[1],"Ana (exemplo)","ana@exemplo.com","Online",true,"Queria conversar sobre ansiedade no trabalho."],
+       [f[5],"Bruno (exemplo)","(11) 90000-0000","Presencial",false,""]].forEach(([slot,name,contact,modality,first,note])=>{
+        if(!slot) return; S.taken.add(slot); S.all.push({slot,name,contact,modality,first,note,uid:"demo"});
+      });
+      document.querySelector("#painel .eyebrow").textContent="Demonstração do painel";
+      renderAll(); return; }
+    const [db,user,sample]=await Promise.all([c.use("db"),c.use("user"),c.use("sample")]);
+    S.sample=sample;
+    S.owner = user ? ((await user.isOwner()) ?? false) : false;
+    if(!db || !user){ setMode(false,"Modo demonstração: entre na sua conta para reservar de verdade."); renderAll(); return; }
+    S.db=db; S.uid=await user.id();
+    setMode(true,"Agenda ao vivo");
+    const timer=setTimeout(()=>setMode(true,"Agenda ao vivo (carregando devagar…)"),10000);
+    db.doc("config/agenda").onSnapshot(s=>{ clearTimeout(timer); if(s.exists) S.cfg={...DEFAULT_CFG,...s.data()}; fillCfgForm(); renderAll(); }, ()=>{});
+    db.collection("slots").onSnapshot(q=>{ clearTimeout(timer); S.taken=new Set(q.docs.map(d=>d.id)); renderAll(); }, ()=>{});
+    db.doc("bookings/"+S.uid).onSnapshot(s=>{ S.mine=(s.exists&&s.data().appts)||[]; renderMine(); }, ()=>{});
+    if(S.owner) db.collection("bookings").onSnapshot(q=>{
+      S.all=q.docs.flatMap(d=>((d.data()||{}).appts||[]).map(a=>({...a,uid:d.id}))); renderAdmin();
+    }, ()=>{});
+  })();
+})();
+</script>
+
+</body>
+</html>
