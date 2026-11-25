@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mercado Azul — Seu super a um clique</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#0047BB; --blue-dark:#002F7A; --blue-light:#E8F0FF; --yellow:#FFC20E;
+  --green:#12A150; --bg:#F5F6F8; --text:#1C2333; --muted:#6B7385; --line:#E3E6EC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Montserrat,system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+
+/* Header */
+header{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.top{display:flex;align-items:center;gap:24px;padding:12px 0}
+.logo{background:var(--blue);color:#fff;font-weight:900;font-style:italic;font-size:22px;letter-spacing:.5px;
+  padding:6px 14px;border:3px solid #fff;outline:2px solid var(--blue);border-radius:6px;box-shadow:0 3px 0 var(--blue-dark);white-space:nowrap;cursor:pointer}
+.search{flex:1;display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:0 12px;height:40px;max-width:560px;margin:0 auto}
+.search input{flex:1;border:none;outline:none;font-family:inherit;font-size:14px}
+.search svg{color:var(--blue)}
+.right{display:flex;align-items:center;gap:14px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{background:#fff;padding:6px 10px;font-size:12px;font-weight:700;color:var(--muted)}
+.lang button.on{background:var(--blue);color:#fff}
+.cart-btn{position:relative;background:none;color:var(--blue)}
+.cart-btn .count{position:absolute;top:-6px;right:-8px;background:var(--yellow);color:var(--text);font-size:11px;font-weight:800;border-radius:999px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
+.pill{background:var(--blue);color:#fff;font-weight:700;padding:10px 26px;border-radius:999px;transition:.2s}
+.pill:hover{background:var(--blue-dark)}
+nav.cats{border-top:1px solid var(--line)}
+nav.cats ul{display:flex;gap:4px;list-style:none;overflow-x:auto;padding:10px 0;scrollbar-width:none}
+nav.cats li{white-space:nowrap;font-weight:600;font-size:13px;padding:4px 10px;border-radius:6px;cursor:pointer}
+nav.cats li:hover{background:var(--blue-light);color:var(--blue)}
+nav.cats li::after{content:" ›";color:var(--blue);font-weight:800}
+nav.cats li.hot{color:var(--blue)}
+
+/* Promo strip */
+.strip{margin:18px 0;display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.strip .big{background:linear-gradient(90deg,var(--blue-light),#fff);padding:10px 22px;font-size:46px;font-weight:900;color:var(--blue);line-height:1}
+.strip .big small{display:block;font-size:12px;font-weight:700}
+.tag{display:inline-block;background:var(--blue);color:#fff;font-weight:800;border-radius:6px;padding:6px 12px;font-size:14px}
+.strip .online{font-weight:700;color:var(--blue)}
+.strip .date{text-align:right;padding-right:24px;font-weight:800;font-size:20px;color:var(--blue-dark)}
+.strip .date small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.legal{text-align:center;font-size:10px;color:var(--muted);margin:-10px 0 16px}
+
+/* Hero */
+.hero{position:relative;border-radius:16px;overflow:hidden;height:330px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.slide{position:absolute;inset:0;display:grid;grid-template-columns:34% 1fr;opacity:0;transition:opacity .6s}
+.slide.on{opacity:1}
+.slide .copy{background:#4A4F59;color:#fff;padding:40px;display:flex;flex-direction:column;justify-content:center;gap:14px;clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}
+.slide h2{font-size:38px;font-weight:800;line-height:1.05}
+.slide p{font-size:14px;opacity:.85}
+.slide .ghost{align-self:flex-start;border:2px solid #fff;background:none;color:#fff;font-weight:700;border-radius:999px;padding:8px 20px}
+.slide .art{display:flex;align-items:center;justify-content:center;gap:50px;font-size:150px}
+.price-seal{background:#fff;border:3px solid var(--text);border-radius:6px;padding:4px 12px;font-size:36px;font-weight:900;font-family:Montserrat;position:relative;line-height:1.1}
+.price-seal small{display:block;font-size:10px;font-weight:600}
+.price-seal .kg{position:absolute;top:-12px;left:-8px;background:var(--blue);color:#fff;font-size:11px;padding:2px 6px;border-radius:4px}
+.dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.dots span{width:9px;height:9px;border-radius:50%;background:#C9CED8;cursor:pointer}
+.dots span.on{background:var(--blue)}
+
+/* Sections */
+section.block{margin:28px 0}
+.sec-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:12px}
+.sec-title h3{font-size:20px;font-weight:800}
+.sec-title a{color:var(--blue);font-weight:700;font-size:13px}
+.row{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.promo-card{border-radius:12px;color:#fff;padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:360px;position:relative;overflow:hidden}
+.promo-card.blue{background:linear-gradient(160deg,var(--blue),var(--blue-dark))}
+.promo-card.light{background:#fff;color:var(--text);border:2px solid var(--blue)}
+.promo-card .pct{font-size:64px;font-weight:900;line-height:.9}
+.promo-card h4{font-size:24px;font-weight:800;line-height:1.1}
+.promo-card .emoji{font-size:110px;text-align:center}
+.promo-card .from{font-size:13px}
+.promo-card .from b{font-size:30px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+
+/* Product card */
+.card{background:#fff;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:.2s}
+.card:hover{box-shadow:0 8px 20px rgba(0,71,187,.15);transform:translateY(-2px)}
+.card .img{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:64px;background:var(--bg)}
+.card .name{font-size:12.5px;font-weight:600;line-height:1.3;height:33px;overflow:hidden}
+.badge{align-self:flex-start;font-size:10.5px;font-weight:800;border-radius:4px;padding:3px 7px}
+.badge.offer{background:var(--yellow)}
+.badge.digital{background:var(--green);color:#fff}
+.badge.dto{background:var(--blue-light);color:var(--blue)}
+.card .price{font-size:20px;font-weight:800}
+.card .old{font-size:11.5px;color:var(--muted);text-decoration:line-through}
+.card .unit{font-size:10.5px;color:var(--muted)}
+.add{background:var(--blue);color:#fff;font-weight:700;border-radius:8px;padding:9px;margin-top:auto;transition:.2s}
+.add:hover{background:var(--blue-dark)}
+.qty{display:flex;align-items:center;justify-content:space-between;border:2px solid var(--blue);border-radius:8px;margin-top:auto}
+.qty button{background:none;color:var(--blue);font-size:18px;font-weight:800;width:38px;height:34px}
+.qty span{font-weight:800}
+
+/* Installments */
+.cuotas{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:24px;background:#fff;border-radius:12px;padding:18px 26px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cuotas .n{font-size:58px;font-weight:900;color:var(--blue);line-height:1}
+.cuotas .n small{font-size:16px;display:block}
+.fake-card{width:120px;height:76px;border-radius:10px;background:linear-gradient(135deg,var(--blue),#4C8DFF);color:#fff;font-size:11px;font-weight:800;padding:10px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 10px rgba(0,71,187,.3)}
+.cuotas p{font-weight:700;font-size:15px}
+
+/* Discount days */
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
+.day{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;border:2px solid transparent;box-shadow:0 1px 3px rgba(0,0,0,.06);min-height:250px}
+.day.today{border-color:var(--blue);box-shadow:0 8px 24px rgba(0,71,187,.2)}
+.day .dn{font-weight:800;font-size:13px;text-transform:uppercase;color:var(--muted)}
+.day.today .dn{color:var(--blue)}
+.day .today-tag{background:var(--blue);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;align-self:flex-start}
+.day .big{font-size:38px;font-weight:900;color:var(--blue);line-height:1}
+.day .em{font-size:40px}
+.day .what{font-weight:700}
+.day .cond{font-size:11px;color:var(--muted);margin-top:auto}
+.page-head{margin:26px 0 18px}
+.page-head h1{font-size:28px;font-weight:800}
+.page-head p{color:var(--muted);margin-top:4px}
+
+/* Flyers */
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-weight:700;font-size:13px}
+.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.flyers{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.flyer{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer;transition:.2s}
+.flyer:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,71,187,.18)}
+.flyer .cover{aspect-ratio:3/4;padding:18px;color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.flyer .cover h4{font-size:26px;font-weight:900;font-style:italic;line-height:1}
+.flyer .cover .e{font-size:70px;text-align:center}
+.flyer .meta{padding:12px;font-size:12px;color:var(--muted)}
+.flyer .meta b{display:block;color:var(--text);font-size:14px}
+.viewer{position:fixed;inset:0;background:rgba(10,20,40,.75);display:none;align-items:center;justify-content:center;z-index:100}
+.viewer.on{display:flex}
+.viewer .page{background:#fff;width:min(520px,90vw);aspect-ratio:3/4;border-radius:10px;padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.viewer .page h4{grid-column:1/-1;background:var(--blue);color:#fff;font-style:italic;font-weight:900;padding:10px;border-radius:6px;font-size:20px}
+.viewer .pitem{border:2px dashed var(--line);border-radius:8px;padding:10px;text-align:center;font-size:12px;font-weight:600}
+.viewer .pitem .e{font-size:44px}
+.viewer .pitem b{display:block;color:var(--blue);font-size:20px}
+.viewer .nav{position:absolute;top:50%;background:#fff;width:44px;height:44px;border-radius:50%;font-size:22px;font-weight:800;color:var(--blue)}
+.viewer .close{position:absolute;top:20px;right:24px;background:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;font-weight:800}
+.viewer .pg{position:absolute;bottom:24px;color:#fff;font-weight:700}
+
+/* Account */
+.auth{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:880px;margin:30px auto}
+.panel{background:#fff;border-radius:12px;padding:26px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:12px}
+.panel h2{font-size:20px;font-weight:800}
+.panel label{font-size:12px;font-weight:700;color:var(--muted)}
+.panel input{border:1px solid var(--line);border-radius:8px;padding:11px;font-family:inherit;font-size:14px;width:100%;margin-top:4px}
+.panel input:focus{outline:2px solid var(--blue);border-color:transparent}
+.panel .pill{text-align:center;margin-top:6px}
+.panel .alt{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.panel ul{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.panel li::before{content:"✓ ";color:var(--green);font-weight:800}
+.panel.side{background:linear-gradient(160deg,var(--blue),var(--blue-dark));color:#fff}
+.panel.side li::before{color:var(--yellow)}
+
+/* Cart drawer */
+.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:.3s;z-index:90}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(380px,92vw);background:#fff;z-index:91;transform:translateX(100%);transition:.3s;display:flex;flex-direction:column}
+.drawer.on{transform:none}.drawer-bg.on{opacity:1;pointer-events:auto}
+.drawer header{position:static;display:flex;justify-content:space-between;align-items:center;padding:18px;box-shadow:none;border-bottom:1px solid var(--line)}
+.drawer h3{font-weight:800}
+.drawer .items{flex:1;overflow:auto;padding:12px 18px;display:flex;flex-direction:column;gap:10px}
+.ditem{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;font-size:12.5px}
+.ditem .e{font-size:30px;background:var(--bg);border-radius:8px;text-align:center}
+.ditem b{display:block}
+.drawer .tot{padding:18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.drawer .tot div{display:flex;justify-content:space-between}
+.drawer .tot .t{font-size:18px;font-weight:800}
+.empty{color:var(--muted);text-align:center;margin-top:40px}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:var(--blue-dark);color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;transition:.3s;z-index:120}
+.toast.on{transform:translate(-50%,0)}
+
+/* Footer */
+footer{background:var(--blue-dark);color:#DCE6FF;margin-top:40px;padding:40px 0 20px}
+.fcols{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:24px}
+footer h5{color:#fff;font-weight:800;margin-bottom:10px;font-size:14px}
+footer li{list-style:none;font-size:13px;margin-bottom:6px;opacity:.85}
+footer .fine{border-top:1px solid rgba(255,255,255,.15);margin-top:28px;padding-top:16px;font-size:11px;opacity:.7;text-align:center}
+.pay{display:flex;gap:6px;flex-wrap:wrap}
+.pay span{background:#fff;color:var(--blue-dark);font-size:10px;font-weight:800;padding:4px 8px;border-radius:4px}
+
+.view{display:none}.view.on{display:block}
+.demo-note{background:var(--yellow);text-align:center;font-size:12px;font-weight:700;padding:6px}
+
+@media(max-width:900px){
+  .search{order:3;flex-basis:100%;max-width:none}
+  .top{flex-wrap:wrap;gap:12px}
+  .right .pill{padding:8px 14px}
+  .strip{grid-template-columns:1fr 1fr}
+  .strip .date{grid-column:1/-1;text-align:center;padding:0 0 12px}
+  .row{grid-template-columns:1fr}
+  .promo-card{min-height:auto}
+  .slide{grid-template-columns:1fr}
+  .slide .copy{clip-path:none}
+  .slide .art{display:none}
+  .days{grid-template-columns:repeat(2,1fr)}
+  .auth,.fcols{grid-template-columns:1fr}
+  .cuotas{grid-template-columns:1fr;text-align:center;justify-items:center}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-note" data-i18n="demo">Esboço de portfólio — marca fictícia, sem compras reais</div>
+
+<header>
+  <div class="wrap top">
+    <div class="logo" onclick="go('home')">MERCADO AZUL</div>
+    <form class="search" onsubmit="event.preventDefault();toast(T('searching')+' “'+this.q.value+'”')">
+      <input name="q" data-i18n-ph="search" placeholder="O que você quer comprar hoje?">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </form>
+    <div class="right">
+      <div class="lang">
+        <button data-l="pt" class="on">PT</button><button data-l="es">ES</button><button data-l="en">EN</button>
+      </div>
+      <button class="cart-btn" onclick="openCart(true)" aria-label="Carrinho">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.5 12h11.5l2-8H6.2"/></svg>
+        <span class="count" id="count">0</span>
+      </button>
+      <button class="pill" id="loginBtn" onclick="go('conta')" data-i18n="login">Entrar</button>
+    </div>
+  </div>
+  <nav class="cats"><div class="wrap"><ul id="cats"></ul></div></nav>
+</header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<div class="view on" id="v-home">
+  <div class="strip">
+    <div class="big">20%<small data-i18n="discount">de desconto</small></div>
+    <div><span class="tag" data-i18n="nolimit">Sem limite</span> <span class="online" data-i18n="online">exclusivo online</span></div>
+    <div style="font-weight:700"><span data-i18n="benefit">benefício</span> <span style="color:var(--blue);font-weight:900;font-style:italic">Comunidade Azul</span></div>
+    <div class="date"><small data-i18n="todayIs">Hoje é</small><span id="today"></span></div>
+  </div>
+  <p class="legal" data-i18n="legal">Para mais informações, condições ou limitações aplicáveis consulte os termos legais</p>
+
+  <div class="hero" id="hero"></div>
+
+  <section class="block">
+    <div class="sec-title"><h3 data-i18n="weekOffers">Super ofertas da semana</h3><a href="#" data-i18n="seeAll">Ver todas ›</a></div>
+    <div class="row">
+      <div class="promo-card blue">
+        <div><div style="font-weight:700;opacity:.9" data-i18n="super">Super</div><h4 data-i18n="weekOffers2">ofertas da semana</h4></div>
+        <div class="emoji">🛒</div>
+        <div class="from"><span data-i18n="upTo">até</span><b>40% OFF</b></div>
+      </div>
+      <div class="grid" id="g1"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="sec-title"><h3 data-i18n="fishTitle">Peixaria</h3><a href="#" data-i18n="seeAll">Ver todas ›</a></div>
+    <div class="row">
+      <div class="promo-card light">
+        <div><div class="pct" style="color:var(--blue)">20%<span style="font-size:14px"> OFF</span></div><span class="tag" style="margin-top:8px" data-i18n="online">exclusivo online</span></div>
+        <h4 data-i18n="fishPromo">em toda nossa peixaria</h4>
+        <div class="emoji">🐟</div>
+        <div class="from"><span data-i18n="salmon">Filé de salmão fresco</span><b style="color:var(--blue)">R$ 89,90<small style="font-size:11px"> /kg</small></b></div>
+      </div>
+      <div class="grid" id="g2"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="cuotas">
+      <div class="n">18<small data-i18n="installments">parcelas sem juros</small></div>
+      <div style="display:flex;gap:10px"><div class="fake-card"><span>CARTÃO AZUL</span><span>•••• 4021</span></div><div class="fake-card" style="background:linear-gradient(135deg,#1C2333,#4A4F59)"><span>BANCO ÓRBITA</span><span>•••• 7788</span></div></div>
+      <p data-i18n="installmentsTxt">Em TVs, geladeiras, lavadoras, ar-condicionado, eletro, ferramentas, móveis, esportes, camping e muito mais!</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="sec-title"><h3 data-i18n="pantry">Mercearia e bebidas</h3><a href="#" data-i18n="seeAll">Ver todas ›</a></div>
+    <div class="grid" id="g3"></div>
+  </section>
+</div>
+
+<!-- DISCOUNT DAYS -->
+<div class="view" id="v-descontos">
+  <div class="page-head"><h1 data-i18n="daysTitle">Dias de desconto</h1><p data-i18n="daysSub">Cada dia da semana uma promoção diferente. O dia de hoje está destacado.</p></div>
+  <div class="days" id="days"></div>
+</div>
+
+<!-- FLYERS -->
+<div class="view" id="v-folhetos">
+  <div class="page-head"><h1 data-i18n="flyersTitle">Folhetos e catálogos</h1><p data-i18n="flyersSub">Confira as ofertas impressas da semana, agora online.</p></div>
+  <div class="filters" id="ffilters"></div>
+  <div class="flyers" id="flyers"></div>
+</div>
+
+<!-- ACCOUNT -->
+<div class="view" id="v-conta">
+  <div class="auth">
+    <form class="panel" onsubmit="event.preventDefault();login(this.email.value)">
+      <h2 data-i18n="loginTitle">Entrar na minha conta</h2>
+      <div><label>E-mail</label><input name="email" type="email" placeholder="voce@email.com" required></div>
+      <div><label data-i18n="password">Senha</label><input type="password" placeholder="••••••••" required></div>
+      <button class="pill" data-i18n="login">Entrar</button>
+      <button type="button" class="pill alt" onclick="toast(T('signupSoon'))" data-i18n="signup">Criar conta</button>
+    </form>
+    <div class="panel side">
+      <h2 data-i18n="whyTitle">Vantagens de ter conta</h2>
+      <ul>
+        <li data-i18n="why1">Acompanhe seus pedidos em tempo real</li>
+        <li data-i18n="why2">Salve endereços e compre em 1 clique</li>
+        <li data-i18n="why3">Descontos exclusivos Comunidade Azul</li>
+        <li data-i18n="why4">Monte listas de compras recorrentes</li>
+      </ul>
+      <div style="font-size:90px;text-align:center;margin-top:auto">🛍️</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div><div class="logo" style="display:inline-block;font-size:18px">MERCADO AZUL</div><p style="margin-top:12px;font-size:13px;opacity:.85" data-i18n="tagline">Seu super a um clique.</p></div>
+      <div><h5 data-i18n="f1">Institucional</h5><ul><li data-i18n="f1a">Quem somos</li><li data-i18n="f1b">Lojas</li><li data-i18n="f1c">Trabalhe conosco</li></ul></div>
+      <div><h5 data-i18n="f2">Ajuda</h5><ul><li data-i18n="f2a">Como comprar</li><li data-i18n="f2b">Entregas</li><li data-i18n="f2c">Trocas e devoluções</li></ul></div>
+      <div><h5 data-i18n="f3">Minha conta</h5><ul><li data-i18n="f3a">Meus pedidos</li><li data-i18n="f3b">Endereços</li><li data-i18n="f3c">Dados pessoais</li></ul></div>
+      <div><h5 data-i18n="f4">Formas de pagamento</h5><div class="pay"><span>PIX</span><span data-i18n="credit">CRÉDITO</span><span data-i18n="debit">DÉBITO</span><span>CARTÃO AZUL</span></div><p style="margin-top:12px;font-size:20px">📘 📸 ▶️</p></div>
+    </div>
+    <div class="fine" data-i18n="fine">© 2026 Mercado Azul — projeto de portfólio. Marca fictícia. Para mais informações, condições ou limitações aplicáveis consulte os termos legais.</div>
+  </div>
+</footer>
+
+<div class="drawer-bg" id="dbg" onclick="openCart(false)"></div>
+<aside class="drawer" id="drawer">
+  <header><h3 data-i18n="cart">Meu carrinho</h3><button onclick="openCart(false)" style="background:none;font-size:20px">✕</button></header>
+  <div class="items" id="ditems"></div>
+  <div class="tot" id="dtot"></div>
+</aside>
+
+<div class="viewer" id="viewer">
+  <button class="close" onclick="closeFlyer()">✕</button>
+  <button class="nav" style="left:5vw" onclick="flip(-1)">‹</button>
+  <div class="page" id="fpage"></div>
+  <button class="nav" style="right:5vw" onclick="flip(1)">›</button>
+  <div class="pg" id="fpg"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const I18N = {
+ pt:{demo:"Esboço de portfólio — marca fictícia, sem compras reais",search:"O que você quer comprar hoje?",login:"Entrar",discount:"de desconto",nolimit:"Sem limite",online:"exclusivo online",benefit:"benefício",todayIs:"Hoje é",legal:"Para mais informações, condições ou limitações aplicáveis consulte os termos legais",weekOffers:"Super ofertas da semana",seeAll:"Ver todas ›",super:"Super",weekOffers2:"ofertas da semana",upTo:"até",fishTitle:"Peixaria",fishPromo:"em toda nossa peixaria",salmon:"Filé de salmão fresco",installments:"parcelas sem juros",installmentsTxt:"Em TVs, geladeiras, lavadoras, ar-condicionado, eletro, ferramentas, móveis, esportes, camping e muito mais!",pantry:"Mercearia e bebidas",daysTitle:"Dias de desconto",daysSub:"Cada dia da semana uma promoção diferente. O dia de hoje está destacado.",flyersTitle:"Folhetos e catálogos",flyersSub:"Confira as ofertas impressas da semana, agora online.",loginTitle:"Entrar na minha conta",password:"Senha",signup:"Criar conta",signupSoon:"Cadastro disponível na versão completa",whyTitle:"Vantagens de ter conta",why1:"Acompanhe seus pedidos em tempo real",why2:"Salve endereços e compre em 1 clique",why3:"Descontos exclusivos Comunidade Azul",why4:"Monte listas de compras recorrentes",tagline:"Seu super a um clique.",f1:"Institucional",f1a:"Quem somos",f1b:"Lojas",f1c:"Trabalhe conosco",f2:"Ajuda",f2a:"Como comprar",f2b:"Entregas",f2c:"Trocas e devoluções",f3:"Minha conta",f3a:"Meus pedidos",f3b:"Endereços",f3c:"Dados pessoais",f4:"Formas de pagamento",credit:"CRÉDITO",debit:"DÉBITO",fine:"© 2026 Mercado Azul — projeto de portfólio. Marca fictícia. Para mais informações, condições ou limitações aplicáveis consulte os termos legais.",cart:"Meu carrinho",add:"Adicionar",added:"adicionado ao carrinho",offer:"Oferta",digital:"Exclusivo Digital",dto:"20% Dto",perKg:"Preço por kg",perL:"Preço por litro",perU:"Preço por unidade",empty:"Seu carrinho está vazio",subtotal:"Subtotal",shipping:"Frete",free:"Grátis",total:"Total",checkout:"Finalizar compra",needLogin:"Entre na sua conta para finalizar",ordered:"Pedido #MA-10482 confirmado! (demonstração)",searching:"Buscando",hello:"Olá",today:"HOJE",cats:["Ofertas","Mercearia","Bebidas","Frescos","Congelados","Limpeza","Perfumaria","Eletro","Têxtil","Casa","Ar Livre","Dias de desconto","Folhetos"],weekdays:["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"],months:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],heroes:[["Especial churrasco","Os cortes mais escolhidos para o seu fim de semana.","Ver ofertas"],["Feira fresca","Frutas e verduras selecionadas todos os dias.","Comprar agora"],["Limpeza 3x2","Leve 3 e pague 2 nas marcas participantes.","Aproveitar"]],
+  days:[["25%","Frescos com Cartão Azul","Teto de R$ 150 por compra."],["2x1","Em bebidas selecionadas","Válido para itens marcados."],["20%","Sem limite, exclusivo online","Para membros Comunidade Azul."],["30%","Em perfumaria","Pagando com Banco Órbita."],["15%","Em toda a loja para aposentados","Apresentando documento."],["35%","Em vinhos e espumantes","Na 2ª unidade."],["10%","Pagando com Pix","Sem valor mínimo."]],
+  ftypes:["Todos","Semanal","Eletro","Têxtil","Natal"],flyers:[["Ofertas da semana","Semanal","Válido de 24/11 a 30/11"],["Especial Natal","Natal","Válido até 24/12"],["Eletro em 18x","Eletro","Válido até 15/12"],["Verão Têxtil","Têxtil","Válido até 31/12"],["Fim de semana","Semanal","Válido de 28/11 a 30/11"],["Ceia completa","Natal","Válido até 31/12"]],page:"Página"},
+ es:{demo:"Boceto de portfolio — marca ficticia, sin compras reales",search:"¿Qué querés comprar hoy?",login:"Ingresar",discount:"de descuento",nolimit:"Sin tope",online:"exclusivo online",benefit:"beneficio",todayIs:"Hoy es",legal:"Para más información, condiciones o limitaciones aplicables consulte los legales",weekOffers:"Súper ofertas de la semana",seeAll:"Ver todas ›",super:"Súper",weekOffers2:"ofertas de la semana",upTo:"hasta",fishTitle:"Pescadería",fishPromo:"en toda nuestra pescadería",salmon:"Filete de salmón fresco",installments:"cuotas sin interés",installmentsTxt:"¡En TV, heladeras, lavarropas, aires, electro, herramientas, muebles, deportes, camping y más!",pantry:"Almacén y bebidas",daysTitle:"Días de descuento",daysSub:"Cada día de la semana una promo distinta. El día de hoy está destacado.",flyersTitle:"Folletos y catálogos",flyersSub:"Mirá las ofertas impresas de la semana, ahora online.",loginTitle:"Ingresar a mi cuenta",password:"Contraseña",signup:"Crear cuenta",signupSoon:"Registro disponible en la versión completa",whyTitle:"Beneficios de tener cuenta",why1:"Seguí tus pedidos en tiempo real",why2:"Guardá direcciones y comprá en 1 clic",why3:"Descuentos exclusivos Comunidad Azul",why4:"Armá listas de compras recurrentes",tagline:"Tu súper a un click.",f1:"Institucional",f1a:"Quiénes somos",f1b:"Sucursales",f1c:"Trabajá con nosotros",f2:"Ayuda",f2a:"Cómo comprar",f2b:"Envíos",f2c:"Cambios y devoluciones",f3:"Mi cuenta",f3a:"Mis pedidos",f3b:"Direcciones",f3c:"Datos personales",f4:"Medios de pago",credit:"CRÉDITO",debit:"DÉBITO",fine:"© 2026 Mercado Azul — proyecto de portfolio. Marca ficticia. Para más información, condiciones o limitaciones aplicables consulte los legales.",cart:"Mi carrito",add:"Agregar",added:"agregado al carrito",offer:"Oferta",digital:"Exclusivo Digital",dto:"20% Dto",perKg:"Precio por kg",perL:"Precio por litro",perU:"Precio por unidad",empty:"Tu carrito está vacío",subtotal:"Subtotal",shipping:"Envío",free:"Gratis",total:"Total",checkout:"Finalizar compra",needLogin:"Ingresá a tu cuenta para finalizar",ordered:"¡Pedido #MA-10482 confirmado! (demostración)",searching:"Buscando",hello:"Hola",today:"HOY",cats:["Ofertas","Almacén","Bebidas","Frescos","Congelados","Limpieza","Perfumería","Electro","Textil","Hogar","Aire Libre","Días de descuento","Folletos"],weekdays:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],months:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],heroes:[["Especial asado","Los cortes más elegidos para tu finde.","Ver ofertas"],["Verdulería fresca","Frutas y verduras seleccionadas todos los días.","Comprar ahora"],["Limpieza 3x2","Llevá 3 y pagá 2 en marcas adheridas.","Aprovechar"]],
+  days:[["25%","Frescos con Tarjeta Azul","Tope de R$ 150 por compra."],["2x1","En bebidas seleccionadas","Válido en productos marcados."],["20%","Sin tope, exclusivo online","Para socios Comunidad Azul."],["30%","En perfumería","Pagando con Banco Órbita."],["15%","En toda la tienda para jubilados","Presentando documento."],["35%","En vinos y espumantes","En la 2ª unidad."],["10%","Pagando con Pix","Sin monto mínimo."]],
+  ftypes:["Todos","Semanal","Electro","Textil","Navidad"],flyers:[["Ofertas de la semana","Semanal","Válido del 24/11 al 30/11"],["Especial Navidad","Navidad","Válido hasta el 24/12"],["Electro en 18 cuotas","Electro","Válido hasta el 15/12"],["Verano Textil","Textil","Válido hasta el 31/12"],["Fin de semana","Semanal","Válido del 28/11 al 30/11"],["Cena completa","Navidad","Válido hasta el 31/12"]],page:"Página"},
+ en:{demo:"Portfolio sketch — fictional brand, no real purchases",search:"What do you want to buy today?",login:"Sign in",discount:"off",nolimit:"No cap",online:"online only",benefit:"benefit",todayIs:"Today is",legal:"For more information, terms or applicable limitations see the legal notice",weekOffers:"Super deals of the week",seeAll:"See all ›",super:"Super",weekOffers2:"deals of the week",upTo:"up to",fishTitle:"Fish counter",fishPromo:"on our entire fish counter",salmon:"Fresh salmon fillet",installments:"interest-free installments",installmentsTxt:"On TVs, fridges, washers, A/C, appliances, tools, furniture, sports, camping and more!",pantry:"Pantry & drinks",daysTitle:"Discount days",daysSub:"A different deal every day of the week. Today is highlighted.",flyersTitle:"Flyers & catalogs",flyersSub:"Browse this week's printed deals, now online.",loginTitle:"Sign in to my account",password:"Password",signup:"Create account",signupSoon:"Sign-up available in the full version",whyTitle:"Why have an account",why1:"Track your orders in real time",why2:"Save addresses and buy in 1 click",why3:"Exclusive Blue Community discounts",why4:"Build recurring shopping lists",tagline:"Your supermarket, one click away.",f1:"Company",f1a:"About us",f1b:"Stores",f1c:"Careers",f2:"Help",f2a:"How to buy",f2b:"Delivery",f2c:"Returns",f3:"My account",f3a:"My orders",f3b:"Addresses",f3c:"Personal details",f4:"Payment methods",credit:"CREDIT",debit:"DEBIT",fine:"© 2026 Mercado Azul — portfolio project. Fictional brand. For more information, terms or applicable limitations see the legal notice.",cart:"My cart",add:"Add",added:"added to cart",offer:"Deal",digital:"Online Exclusive",dto:"20% Off",perKg:"Price per kg",perL:"Price per liter",perU:"Price per unit",empty:"Your cart is empty",subtotal:"Subtotal",shipping:"Shipping",free:"Free",total:"Total",checkout:"Checkout",needLogin:"Sign in to check out",ordered:"Order #MA-10482 confirmed! (demo)",searching:"Searching",hello:"Hi",today:"TODAY",cats:["Deals","Pantry","Drinks","Fresh","Frozen","Cleaning","Personal care","Appliances","Textiles","Home","Outdoors","Discount days","Flyers"],weekdays:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],months:["January","February","March","April","May","June","July","August","September","October","November","December"],heroes:[["BBQ special","The most popular cuts for your weekend.","See deals"],["Fresh market","Hand-picked fruit and veg every day.","Shop now"],["Cleaning 3 for 2","Take 3, pay for 2 on selected brands.","Grab it"]],
+  days:[["25%","Fresh food with Blue Card","Max R$ 150 per purchase."],["2for1","On selected drinks","Valid on marked items."],["20%","No cap, online only","For Blue Community members."],["30%","On personal care","Paying with Órbita Bank."],["15%","Storewide for seniors","ID required."],["35%","On wines & sparkling","On the 2nd unit."],["10%","Paying with Pix","No minimum."]],
+  ftypes:["All","Weekly","Appliances","Textiles","Christmas"],flyers:[["Deals of the week","Weekly","Valid 11/24 to 11/30"],["Christmas special","Christmas","Valid until 12/24"],["Appliances in 18x","Appliances","Valid until 12/15"],["Summer textiles","Textiles","Valid until 12/31"],["Weekend deals","Weekly","Valid 11/28 to 11/30"],["Holiday dinner","Christmas","Valid until 12/31"]],page:"Page"}
+};
+const P = [
+ {id:1,e:"🦐",n:{pt:"Camarão limpo cozido 500 g",es:"Camarón pelado cocido 500 g",en:"Cooked peeled shrimp 500 g"},p:59.9,o:74.9,b:"offer",u:"kg",up:119.8,g:2},
+ {id:2,e:"🐟",n:{pt:"Filé de merluza sem espinha",es:"Filete de merluza sin espinas",en:"Boneless hake fillet"},p:42.5,o:53.1,b:"dto",u:"kg",up:42.5,g:2},
+ {id:3,e:"🍣",n:{pt:"Salmão rosado filé com pele",es:"Salmón rosado filete con piel",en:"Pink salmon fillet, skin-on"},p:89.9,o:112.4,b:"digital",u:"kg",up:89.9,g:2},
+ {id:4,e:"🦑",n:{pt:"Anéis de lula congelados 400 g",es:"Rabas de calamar congeladas 400 g",en:"Frozen squid rings 400 g"},p:34.9,o:43.6,b:"dto",u:"kg",up:87.2,g:2},
+ {id:5,e:"🥩",n:{pt:"Picanha bovina peça",es:"Tapa de cuadril vacuna",en:"Beef rump cap"},p:69.9,o:89.9,b:"offer",u:"kg",up:69.9,g:1},
+ {id:6,e:"🍌",n:{pt:"Banana prata kg",es:"Banana Cavendish kg",en:"Bananas per kg"},p:6.49,o:null,b:"digital",u:"kg",up:6.49,g:1},
+ {id:7,e:"🧀",n:{pt:"Queijo muçarela fatiado 150 g",es:"Queso mozzarella en fetas 150 g",en:"Sliced mozzarella 150 g"},p:9.99,o:13.49,b:"offer",u:"kg",up:66.6,g:1},
+ {id:8,e:"🥑",n:{pt:"Abacate unidade",es:"Palta unidad",en:"Avocado each"},p:4.99,o:6.99,b:"dto",u:"u",up:4.99,g:1},
+ {id:9,e:"🥛",n:{pt:"Leite integral Vale Azul 1 L",es:"Leche entera Valle Azul 1 L",en:"Valle Azul whole milk 1 L"},p:5.49,o:null,b:"offer",u:"l",up:5.49,g:3},
+ {id:10,e:"💧",n:{pt:"Água mineral sem gás 2 L",es:"Agua mineral sin gas 2 L",en:"Still mineral water 2 L"},p:3.29,o:3.99,b:"dto",u:"l",up:1.65,g:3},
+ {id:11,e:"☕",n:{pt:"Café torrado e moído Serra Alta 500 g",es:"Café molido Sierra Alta 500 g",en:"Serra Alta ground coffee 500 g"},p:22.9,o:27.9,b:"digital",u:"kg",up:45.8,g:3},
+ {id:12,e:"🍝",n:{pt:"Macarrão espaguete Nonna 500 g",es:"Fideos spaghetti Nonna 500 g",en:"Nonna spaghetti 500 g"},p:4.79,o:null,b:"offer",u:"kg",up:9.58,g:3},
+ {id:13,e:"🍷",n:{pt:"Vinho tinto Malbec Cordilheira 750 ml",es:"Vino tinto Malbec Cordillera 750 ml",en:"Cordillera Malbec red wine 750 ml"},p:39.9,o:49.9,b:"digital",u:"l",up:53.2,g:3},
+ {id:14,e:"🫒",n:{pt:"Azeite extravirgem 500 ml",es:"Aceite de oliva extra virgen 500 ml",en:"Extra virgin olive oil 500 ml"},p:29.9,o:36.9,b:"dto",u:"l",up:59.8,g:3},
+ {id:15,e:"🍪",n:{pt:"Biscoito recheado chocolate 140 g",es:"Galletitas rellenas chocolate 140 g",en:"Chocolate sandwich cookies 140 g"},p:3.49,o:4.29,b:"offer",u:"kg",up:24.9,g:1},
+ {id:16,e:"🧃",n:{pt:"Suco de laranja integral 1 L",es:"Jugo de naranja exprimido 1 L",en:"Fresh orange juice 1 L"},p:11.9,o:null,b:"digital",u:"l",up:11.9,g:3}
+];
+let lang = localStorage.getItem('ma-lang') || 'pt';
+let cart = JSON.parse(localStorage.getItem('ma-cart')||'{}');
+let user = localStorage.getItem('ma-user');
+let slide = 0, flyerIdx = 0, flyerPage = 0, ftype = 0;
+const T = k => I18N[lang][k];
+const fmt = v => v.toLocaleString(lang==='en'?'en-US':lang==='es'?'es-AR':'pt-BR',{style:'currency',currency:'BRL'});
+
+function applyLang(){
+  document.documentElement.lang = {pt:'pt-BR',es:'es-AR',en:'en'}[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=T(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>el.placeholder=T(el.dataset.i18nPh));
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
+  const d=new Date(); document.getElementById('today').textContent=`${T('weekdays')[d.getDay()]}, ${d.getDate()} ${lang==='en'?'':'de '}${T('months')[d.getMonth()]}`;
+  document.getElementById('cats').innerHTML=T('cats').map((c,i)=>`<li class="${i===0||i>10?'hot':''}" onclick="${i===11?"go('descontos')":i===12?"go('folhetos')":"toast('"+c+"')"}">${c}</li>`).join('');
+  document.getElementById('loginBtn').textContent = user ? `${T('hello')}, ${user.split('@')[0]}` : T('login');
+  renderHero(); renderGrids(); renderDays(); renderFlyers(); renderCart();
+}
+function renderHero(){
+  const arts=[["🥩","🍖",[69.9,54.9]],["🍎","🥬",[8.9,4.5]],["🧴","🧽",[12.9,6.9]]];
+  document.getElementById('hero').innerHTML=T('heroes').map((h,i)=>`
+   <div class="slide ${i===slide?'on':''}">
+    <div class="copy"><h2>${h[0]}</h2><p>${h[1]}</p><button class="ghost" onclick="toast('${h[2]}')">${h[2]}</button></div>
+    <div class="art"><span>${arts[i][0]}</span><div class="price-seal"><span class="kg">${lang==='en'?'per kg':'x kg'}</span>${fmt(arts[i][2][0])}<small>${T('offer')}</small></div><span>${arts[i][1]}</span></div>
+   </div>`).join('')+`<div class="dots">${[0,1,2].map(i=>`<span class="${i===slide?'on':''}" onclick="slide=${i};renderHero()"></span>`).join('')}</div>`;
+}
+function card(p){
+  const q=cart[p.id]||0, bl={offer:'offer',digital:'digital',dto:'dto'}[p.b];
+  return `<div class="card"><div class="img">${p.e}</div><div class="name">${p.n[lang]}</div>
+   <span class="badge ${bl}">${T(p.b)}</span><div class="price">${fmt(p.p)}</div>
+   <div class="old">${p.o?fmt(p.o):'&nbsp;'}</div>
+   <div class="unit">${T(p.u==='kg'?'perKg':p.u==='l'?'perL':'perU')}: ${fmt(p.up)}</div>
+   ${q?`<div class="qty"><button onclick="setQ(${p.id},-1)">–</button><span>${q}</span><button onclick="setQ(${p.id},1)">+</button></div>`
+      :`<button class="add" onclick="setQ(${p.id},1,true)">${T('add')}</button>`}</div>`;
+}
+function renderGrids(){
+  const sel=g=>P.filter(p=>p.g===g);
+  document.getElementById('g1').innerHTML=sel(1).map(card).join('');
+  document.getElementById('g2').innerHTML=sel(2).map(card).join('');
+  document.getElementById('g3').innerHTML=sel(3).map(card).join('');
+}
+function setQ(id,d,msg){
+  cart[id]=(cart[id]||0)+d; if(cart[id]<=0) delete cart[id];
+  localStorage.setItem('ma-cart',JSON.stringify(cart));
+  if(msg) toast(`${P.find(p=>p.id===id).n[lang]} ${T('added')}`);
+  renderGrids(); renderCart();
+}
+function renderCart(){
+  const ids=Object.keys(cart), n=ids.reduce((s,i)=>s+cart[i],0);
+  document.getElementById('count').textContent=n;
+  const sub=ids.reduce((s,i)=>s+P.find(p=>p.id==i).p*cart[i],0), ship=sub>=199||!sub?0:14.9;
+  document.getElementById('ditems').innerHTML = ids.length? ids.map(i=>{const p=P.find(x=>x.id==i);return `<div class="ditem"><div class="e">${p.e}</div><div><b>${p.n[lang]}</b>${fmt(p.p)}</div><div class="qty" style="width:100px"><button onclick="setQ(${p.id},-1)">–</button><span>${cart[i]}</span><button onclick="setQ(${p.id},1)">+</button></div></div>`}).join('') : `<p class="empty">🛒<br>${T('empty')}</p>`;
+  document.getElementById('dtot').innerHTML = `<div><span>${T('subtotal')}</span><b>${fmt(sub)}</b></div><div><span>${T('shipping')}</span><b>${ship?fmt(ship):T('free')}</b></div><div class="t"><span>${T('total')}</span><span>${fmt(sub+ship)}</span></div><button class="pill" onclick="checkout()" ${ids.length?'':'disabled style="opacity:.5"'}>${T('checkout')}</button>`;
+}
+function checkout(){
+  if(!user){openCart(false);go('conta');toast(T('needLogin'));return}
+  cart={};localStorage.setItem('ma-cart','{}');renderCart();renderGrids();openCart(false);toast(T('ordered'));
+}
+function login(email){user=email;localStorage.setItem('ma-user',email);applyLang();go('home');toast(`${T('hello')}, ${email.split('@')[0]}!`)}
+function renderDays(){
+  const today=new Date().getDay(), order=[1,2,3,4,5,6,0], em=["🥬","🥤","💻","🧴","👵","🍷","📲"];
+  document.getElementById('days').innerHTML=order.map((wd,i)=>{const d=T('days')[i];return `<div class="day ${wd===today?'today':''}">
+   <div class="dn">${T('weekdays')[wd]}</div>${wd===today?`<span class="today-tag">${T('today')}</span>`:''}
+   <div class="em">${em[i]}</div><div class="big">${d[0]}</div><div class="what">${d[1]}</div><div class="cond">${d[2]}</div></div>`}).join('');
+}
+const FCOL=["linear-gradient(160deg,#0047BB,#002F7A)","linear-gradient(160deg,#C62828,#1B5E20)","linear-gradient(160deg,#1C2333,#0047BB)","linear-gradient(160deg,#00A3E0,#0047BB)","linear-gradient(160deg,#FFC20E,#F57C00)","linear-gradient(160deg,#1B5E20,#002F7A)"];
+const FEMO=["🛒","🎄","📺","👕","🧺","🍗"];
+function renderFlyers(){
+  const types=T('ftypes');
+  document.getElementById('ffilters').innerHTML=types.map((t,i)=>`<button class="chip ${i===ftype?'on':''}" onclick="ftype=${i};renderFlyers()">${t}</button>`).join('');
+  document.getElementById('flyers').innerHTML=T('flyers').map((f,i)=>({f,i})).filter(x=>ftype===0||x.f[1]===types[ftype]).map(({f,i})=>`
+   <div class="flyer" onclick="openFlyer(${i})"><div class="cover" style="background:${FCOL[i]}"><span style="font-weight:900;font-style:italic;font-size:12px">MERCADO AZUL</span><div class="e">${FEMO[i]}</div><h4>${f[0]}</h4></div>
+   <div class="meta"><b>${f[0]}</b>${f[2]}</div></div>`).join('');
+}
+function openFlyer(i){flyerIdx=i;flyerPage=0;drawFlyer();document.getElementById('viewer').classList.add('on')}
+function closeFlyer(){document.getElementById('viewer').classList.remove('on')}
+function flip(d){flyerPage=(flyerPage+d+3)%3;drawFlyer()}
+function drawFlyer(){
+  const items=P.slice(flyerPage*4+flyerIdx%4,flyerPage*4+flyerIdx%4+4);
+  document.getElementById('fpage').innerHTML=`<h4>${T('flyers')[flyerIdx][0]}</h4>`+items.map(p=>`<div class="pitem"><div class="e">${p.e}</div>${p.n[lang]}<b>${fmt(p.p)}</b></div>`).join('');
+  document.getElementById('fpg').textContent=`${T('page')} ${flyerPage+1} / 3`;
+}
+function go(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));window.scrollTo({top:0,behavior:'smooth'})}
+function openCart(o){document.getElementById('drawer').classList.toggle('on',o);document.getElementById('dbg').classList.toggle('on',o)}
+let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200)}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;localStorage.setItem('ma-lang',lang);applyLang()});
+setInterval(()=>{if(!document.hidden){slide=(slide+1)%3;renderHero()}},5000);
+applyLang();
+</script>
+</body>
+</html>
