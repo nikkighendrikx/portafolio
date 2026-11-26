@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hojitas. — cuadernos hechos a mano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fdf3e9;
+    --paper:#fffaf4;
+    --peach:#fbe3d3;
+    --blush:#f6c9c3;
+    --rose:#e8918f;
+    --rose-dark:#c96e6e;
+    --ink:#5b4740;
+    --ink-soft:#8b7368;
+    --sage:#b9cba8;
+    --sky:#cfe4ee;
+    --butter:#f8e3a8;
+    --line:#efd9c8;
+    --hand:'Gaegu', 'Patrick Hand', cursive;
+    --body:'Nunito', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--cream);
+    background-image:radial-gradient(#f3dccb 1px, transparent 1px);
+    background-size:22px 22px;
+    line-height:1.6;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  img,svg{display:block}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:rgba(253,243,233,.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px dashed var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{font-family:var(--hand);font-size:34px;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:4px}
+  .logo span{color:var(--rose)}
+  .logo svg{width:20px;height:20px;margin-top:-14px}
+  .nav ul{display:flex;gap:34px;list-style:none;font-family:var(--hand);font-size:21px}
+  .nav ul a{position:relative;padding:4px 2px;color:var(--ink-soft);transition:color .2s}
+  .nav ul a:hover,.nav ul a.active{color:var(--rose-dark)}
+  .nav ul a.active::after{
+    content:"";position:absolute;left:-4px;right:-4px;bottom:-2px;height:8px;
+    background:var(--blush);border-radius:6px;z-index:-1;opacity:.8
+  }
+  .nav-actions{display:flex;gap:10px;align-items:center}
+  .icon-btn{
+    width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+    background:var(--paper);border:1.5px solid var(--line);position:relative;transition:transform .2s
+  }
+  .icon-btn:hover{transform:translateY(-2px) rotate(-4deg)}
+  .icon-btn svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .badge{
+    position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;
+    background:var(--rose);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;
+    transform:scale(0);transition:transform .25s cubic-bezier(.3,1.6,.5,1)
+  }
+  .badge.show{transform:scale(1)}
+  .menu-toggle{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:36px 0 70px}
+  .hero-card{
+    background:linear-gradient(135deg,#fff6ee 0%, #fce8db 100%);
+    border-radius:34px;border:1.5px solid var(--line);
+    display:grid;grid-template-columns:1fr 1.15fr;align-items:center;gap:20px;
+    padding:56px 0 56px 64px;overflow:hidden;position:relative;
+    box-shadow:0 20px 50px -30px rgba(160,100,80,.35);
+  }
+  .hero h1{
+    font-family:var(--hand);font-weight:700;font-size:clamp(44px,5.4vw,68px);
+    line-height:1.02;letter-spacing:.3px
+  }
+  .hero h1 em{font-style:normal;color:var(--rose);position:relative;white-space:nowrap}
+  .hero h1 em svg{position:absolute;right:-30px;top:2px;width:26px;height:26px}
+  .squiggle{width:120px;height:14px;margin:22px 0 18px}
+  .hero p{font-family:var(--hand);font-size:22px;color:var(--ink-soft);max-width:330px;line-height:1.3}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+    background:var(--rose);color:#fff;font-family:var(--hand);font-size:22px;font-weight:700;
+    padding:10px 26px;border-radius:40px;box-shadow:0 6px 0 var(--rose-dark);
+    transition:transform .15s, box-shadow .15s
+  }
+  .btn:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--rose-dark)}
+  .btn:active{transform:translateY(6px);box-shadow:0 0 0 var(--rose-dark)}
+  .btn.ghost{background:transparent;color:var(--ink);box-shadow:none;border:1.5px dashed var(--ink-soft);margin-left:10px}
+  .btn.ghost:hover{background:var(--paper)}
+  .hero-art{width:100%;height:auto;margin-right:-6px}
+  .hero-stamp{
+    position:absolute;left:64px;bottom:22px;display:flex;gap:18px;font-family:var(--hand);font-size:17px;color:var(--ink-soft)
+  }
+  .hero-stamp span{display:flex;align-items:center;gap:6px}
+  .hero-stamp i{width:8px;height:8px;border-radius:50%;background:var(--sage);display:inline-block}
+
+  /* floating */
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+  @keyframes steam{0%{opacity:0;transform:translateY(4px)}40%{opacity:.8}100%{opacity:0;transform:translateY(-14px)}}
+  .bob{animation:bob 4s ease-in-out infinite}
+  .sway{transform-origin:bottom center;transform-box:fill-box;animation:sway 5s ease-in-out infinite}
+  .steam path{animation:steam 3s ease-in-out infinite}
+  .steam path:nth-child(2){animation-delay:1s}
+  .steam path:nth-child(3){animation-delay:2s}
+  .cloud-move{animation:cloudmove 22s linear infinite}
+  @keyframes cloudmove{0%{transform:translateX(-30px)}50%{transform:translateX(30px)}100%{transform:translateX(-30px)}}
+
+  /* ---------- SECTION HEADS ---------- */
+  section{scroll-margin-top:80px}
+  .head{text-align:center;margin-bottom:44px}
+  .head small{font-family:var(--hand);font-size:20px;color:var(--rose);display:block}
+  .head h2{font-family:var(--hand);font-size:clamp(36px,4vw,50px);font-weight:700;line-height:1.1}
+  .head p{color:var(--ink-soft);max-width:520px;margin:10px auto 0}
+
+  /* ---------- FILTERS ---------- */
+  .filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+  .chip{
+    font-family:var(--hand);font-size:19px;padding:5px 18px;border-radius:30px;
+    background:var(--paper);border:1.5px solid var(--line);transition:all .2s
+  }
+  .chip:hover{border-color:var(--blush)}
+  .chip.on{background:var(--blush);border-color:var(--blush);color:var(--ink)}
+
+  /* ---------- PRODUCTS ---------- */
+  .shop{padding:40px 0 90px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+  .card{
+    background:var(--paper);border-radius:26px;border:1.5px solid var(--line);
+    padding:18px 18px 22px;position:relative;transition:transform .3s, box-shadow .3s
+  }
+  .card:hover{transform:translateY(-6px) rotate(-.4deg);box-shadow:0 22px 40px -26px rgba(160,100,80,.45)}
+  .card .tape{
+    position:absolute;top:-12px;left:50%;width:84px;height:24px;transform:translateX(-50%) rotate(-3deg);
+    background:rgba(246,201,195,.7);border-radius:3px;
+  }
+  .card:nth-child(3n+2) .tape{background:rgba(185,203,168,.7);transform:translateX(-50%) rotate(2deg)}
+  .card:nth-child(3n) .tape{background:rgba(248,227,168,.8);transform:translateX(-50%) rotate(-1deg)}
+  .cover{
+    border-radius:18px;height:250px;display:grid;place-items:center;position:relative;overflow:hidden
+  }
+  .cover svg{width:150px;height:auto;filter:drop-shadow(0 10px 10px rgba(120,70,50,.18));transition:transform .4s}
+  .card:hover .cover svg{transform:rotate(-5deg) scale(1.04)}
+  .tag{
+    position:absolute;top:14px;left:14px;font-family:var(--hand);font-size:16px;
+    background:#fff;padding:1px 12px;border-radius:20px;color:var(--rose-dark)
+  }
+  .fav{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center}
+  .fav svg{width:18px;height:18px;fill:none;stroke:var(--rose);stroke-width:2}
+  .fav.on svg{fill:var(--rose)}
+  .card h3{font-family:var(--hand);font-size:27px;margin-top:16px;line-height:1.1}
+  .card .meta{font-size:14px;color:var(--ink-soft);margin-top:4px}
+  .card .row{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+  .price{font-family:var(--hand);font-size:28px;font-weight:700}
+  .add{
+    font-family:var(--hand);font-size:19px;font-weight:700;padding:6px 18px;border-radius:30px;
+    background:var(--ink);color:var(--paper);transition:background .2s, transform .15s
+  }
+  .add:hover{background:var(--rose)}
+  .add.done{background:var(--sage);color:var(--ink)}
+
+  /* ---------- PROCESS ---------- */
+  .process{padding:90px 0;background:var(--paper);border-top:1.5px dashed var(--line);border-bottom:1.5px dashed var(--line)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;position:relative}
+  .step{text-align:center;padding:10px}
+  .step .bubble{
+    width:110px;height:110px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;
+    background:var(--peach);position:relative
+  }
+  .step:nth-child(2) .bubble{background:#e7efdc}
+  .step:nth-child(3) .bubble{background:#fbeccb}
+  .step:nth-child(4) .bubble{background:#e3eef3}
+  .step .bubble svg{width:58px;height:58px}
+  .step .num{
+    position:absolute;top:-2px;right:-2px;width:32px;height:32px;border-radius:50%;
+    background:#fff;border:1.5px solid var(--line);font-family:var(--hand);font-weight:700;font-size:20px;display:grid;place-items:center
+  }
+  .step h4{font-family:var(--hand);font-size:25px}
+  .step p{font-size:15px;color:var(--ink-soft)}
+
+  /* ---------- CUSTOM ---------- */
+  .custom{padding:90px 0}
+  .custom-box{
+    display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;
+    background:linear-gradient(135deg,#fbe3d3,#f9eee0);border-radius:34px;padding:54px;border:1.5px solid var(--line)
+  }
+  .preview{display:grid;place-items:center;min-height:330px}
+  .preview svg{width:220px;filter:drop-shadow(0 16px 18px rgba(120,70,50,.22));transition:transform .3s}
+  .field{margin-top:18px}
+  .field label{font-family:var(--hand);font-size:21px;display:block;margin-bottom:6px}
+  .swatches{display:flex;gap:10px}
+  .sw{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line);transition:transform .2s}
+  .sw.on{box-shadow:0 0 0 2.5px var(--ink);transform:scale(1.08)}
+  .opts{display:flex;gap:8px;flex-wrap:wrap}
+  .opt{font-family:var(--hand);font-size:18px;padding:4px 16px;border-radius:20px;background:#fff;border:1.5px solid var(--line)}
+  .opt.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .field input{
+    width:100%;max-width:340px;font-family:var(--hand);font-size:22px;padding:8px 16px;border-radius:14px;
+    border:1.5px dashed var(--ink-soft);background:#fff;color:var(--ink);outline:none
+  }
+  .field input:focus{border-style:solid;border-color:var(--rose)}
+  .custom-price{font-family:var(--hand);font-size:24px;margin-top:20px}
+  .custom-price b{font-size:32px}
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{padding:30px 0 100px}
+  .notes{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+  .note{
+    background:#fff8d8;padding:28px 26px 22px;border-radius:4px 4px 18px 4px;position:relative;
+    box-shadow:0 14px 22px -16px rgba(120,80,40,.4);font-family:var(--hand);font-size:22px;line-height:1.3
+  }
+  .note:nth-child(1){transform:rotate(-2deg)}
+  .note:nth-child(2){transform:rotate(1.5deg);background:#fde4e1}
+  .note:nth-child(3){transform:rotate(-1deg);background:#e6f0dc}
+  .note::before{
+    content:"";position:absolute;top:-10px;left:50%;width:18px;height:18px;border-radius:50%;
+    background:var(--rose);transform:translateX(-50%);box-shadow:inset -3px -3px 0 rgba(0,0,0,.12)
+  }
+  .note cite{display:block;margin-top:14px;font-style:normal;font-size:18px;color:var(--ink-soft)}
+  .stars{color:var(--rose);letter-spacing:2px;font-size:16px;margin-bottom:6px;font-family:var(--body)}
+
+  /* ---------- NEWSLETTER ---------- */
+  .letter{padding:0 0 90px}
+  .letter-box{
+    background:var(--ink);color:var(--cream);border-radius:34px;padding:50px 56px;
+    display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;position:relative;overflow:hidden
+  }
+  .letter-box h3{font-family:var(--hand);font-size:40px;line-height:1.05}
+  .letter-box p{opacity:.8;margin-top:6px}
+  .letter-form{display:flex;gap:10px;flex:1;max-width:440px}
+  .letter-form input{
+    flex:1;padding:12px 20px;border-radius:30px;border:none;font-family:var(--body);font-size:15px;background:var(--cream);color:var(--ink);outline:none
+  }
+  .letter-form .btn{margin:0;box-shadow:none}
+  .letter-msg{font-family:var(--hand);font-size:20px;color:var(--butter);width:100%;min-height:1em}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:50px 0 40px;border-top:1.5px dashed var(--line)}
+  .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+  .foot h5{font-family:var(--hand);font-size:22px;margin-bottom:8px}
+  .foot ul{list-style:none;font-size:15px;color:var(--ink-soft)}
+  .foot li{margin:4px 0}
+  .foot li a:hover{color:var(--rose)}
+  .foot .about{color:var(--ink-soft);font-size:15px;max-width:280px;margin-top:6px}
+  .copy{text-align:center;font-family:var(--hand);font-size:18px;color:var(--ink-soft);margin-top:40px}
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(91,71,64,.3);opacity:0;pointer-events:none;transition:opacity .3s;z-index:60}
+  .overlay.open{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:min(400px,100%);background:var(--paper);z-index:70;
+    transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;
+    border-left:1.5px solid var(--line)
+  }
+  .drawer.open{transform:none}
+  .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:22px 26px;border-bottom:1.5px dashed var(--line)}
+  .drawer-head h3{font-family:var(--hand);font-size:30px}
+  .drawer-body{flex:1;overflow:auto;padding:16px 26px}
+  .empty{text-align:center;font-family:var(--hand);font-size:22px;color:var(--ink-soft);margin-top:60px}
+  .empty svg{width:90px;margin:0 auto 12px}
+  .item{display:flex;gap:14px;align-items:center;padding:14px 0;border-bottom:1px dashed var(--line)}
+  .item .mini{width:56px;height:66px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+  .item .mini svg{width:38px}
+  .item .info{flex:1}
+  .item h6{font-family:var(--hand);font-size:20px;font-weight:700;line-height:1.1}
+  .item .sub{font-size:13px;color:var(--ink-soft)}
+  .qty{display:flex;align-items:center;gap:8px;margin-top:4px}
+  .qty button{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);font-weight:700;line-height:1}
+  .item .p{font-family:var(--hand);font-size:21px;font-weight:700}
+  .drawer-foot{padding:20px 26px;border-top:1.5px dashed var(--line)}
+  .total{display:flex;justify-content:space-between;font-family:var(--hand);font-size:26px}
+  .ship{font-size:13px;color:var(--ink-soft);margin:4px 0 10px}
+  .bar{height:8px;background:var(--peach);border-radius:8px;overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--rose);width:0;transition:width .4s;border-radius:8px}
+  .drawer-foot .btn{width:100%;justify-content:center;margin-top:16px}
+
+  .toast{
+    position:fixed;bottom:26px;left:50%;transform:translate(-50%,120px);background:var(--ink);color:var(--cream);
+    font-family:var(--hand);font-size:21px;padding:10px 24px;border-radius:30px;z-index:80;transition:transform .35s cubic-bezier(.3,1.5,.5,1)
+  }
+  .toast.show{transform:translate(-50%,0)}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:960px){
+    .hero-card{grid-template-columns:minmax(0,1fr);padding:44px 24px 70px;text-align:center}
+    .hero h1{font-size:clamp(36px,10vw,56px)}
+    .hero h1 em{white-space:normal}
+    .hero h1 em svg{display:none}
+    .hero p{margin:0 auto}
+    .squiggle{margin:22px auto 18px}
+    .hero-stamp{left:0;right:0;justify-content:center}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .custom-box{grid-template-columns:1fr;padding:36px}
+    .notes{grid-template-columns:1fr;max-width:460px;margin:0 auto}
+    .foot{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:720px){
+    .nav ul{
+      position:absolute;top:72px;left:0;right:0;flex-direction:column;gap:6px;background:var(--cream);
+      padding:14px 28px 20px;border-bottom:1.5px dashed var(--line);display:none
+    }
+    .nav ul.open{display:flex}
+    .menu-toggle{display:grid}
+    .grid{grid-template-columns:1fr}
+    .btn.ghost{margin-left:0}
+    .hero-stamp{flex-wrap:wrap;gap:8px 14px;bottom:18px;padding:0 16px}
+    .letter-box{padding:36px 28px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="logo">Hojitas<span>.</span>
+      <svg viewBox="0 0 20 20"><path d="M10 2 L11.6 8.4 L18 10 L11.6 11.6 L10 18 L8.4 11.6 L2 10 L8.4 8.4Z" fill="#e8918f"/></svg>
+    </a>
+    <ul id="menu">
+      <li><a href="#inicio" class="active">inicio</a></li>
+      <li><a href="#tienda">cuadernos</a></li>
+      <li><a href="#proceso">proceso</a></li>
+      <li><a href="#personaliza">personalizá</a></li>
+      <li><a href="#opiniones">opiniones</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+      <button class="icon-btn" id="cartBtn" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8Z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg>
+        <span class="badge" id="badge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div class="hero-card">
+      <div>
+        <h1>la vida es una<br>colección de<br><em>pequeños momentos.
+          <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" fill="none" stroke="#e8918f" stroke-width="2"/></svg></em></h1>
+        <svg class="squiggle" viewBox="0 0 120 14"><path d="M2 7 Q 12 0 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 118 7" fill="none" stroke="#e8918f" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <p>cuadernos cosidos a mano, hoja por hoja, para guardar los tuyos.</p>
+        <a href="#tienda" class="btn">ver cuadernos
+          <svg width="20" height="14" viewBox="0 0 20 14"><path d="M1 7h17M12 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#personaliza" class="btn ghost">hacé el tuyo</a>
+      </div>
+
+      <!-- Ilustración del escritorio junto a la ventana -->
+      <svg class="hero-art" viewBox="0 0 560 440" aria-hidden="true">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#bfe0ef"/><stop offset="1" stop-color="#eaf5f2"/>
+          </linearGradient>
+          <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e7c09e"/><stop offset="1" stop-color="#d6a884"/>
+          </linearGradient>
+          <clipPath id="win"><rect x="150" y="30" width="300" height="250" rx="8"/></clipPath>
+        </defs>
+
+        <!-- ventana -->
+        <rect x="140" y="20" width="320" height="270" rx="14" fill="#fff4ea"/>
+        <g clip-path="url(#win)">
+          <rect x="150" y="30" width="300" height="250" fill="url(#sky)"/>
+          <g class="cloud-move">
+            <g fill="#fff" opacity=".95">
+              <ellipse cx="220" cy="80" rx="34" ry="16"/><ellipse cx="244" cy="70" rx="24" ry="18"/><ellipse cx="200" cy="86" rx="22" ry="12"/>
+              <ellipse cx="380" cy="110" rx="30" ry="13"/><ellipse cx="400" cy="102" rx="20" ry="14"/>
+            </g>
+          </g>
+          <!-- colinas y casitas -->
+          <path d="M150 230 Q 220 190 300 215 T 450 205 V 280 H150Z" fill="#c9dcb1"/>
+          <path d="M150 250 Q 250 225 340 245 T 450 240 V 280 H150Z" fill="#b2cb98"/>
+          <g>
+            <rect x="268" y="200" width="22" height="20" fill="#fbe3d3"/><path d="M265 202 L279 188 L293 202Z" fill="#e8918f"/>
+            <rect x="330" y="206" width="18" height="16" fill="#fff"/><path d="M327 208 L339 196 L351 208Z" fill="#d9a58c"/>
+            <circle cx="235" cy="222" r="12" fill="#9fbd85"/><circle cx="375" cy="220" r="10" fill="#9fbd85"/>
+          </g>
+        </g>
+        <!-- marco y cruz -->
+        <rect x="150" y="30" width="300" height="250" rx="8" fill="none" stroke="#fff" stroke-width="8"/>
+        <rect x="296" y="30" width="8" height="250" fill="#fff"/>
+        <rect x="150" y="152" width="300" height="8" fill="#fff"/>
+        <!-- cortinas -->
+        <path d="M118 10 Q 150 120 132 300 L 170 300 Q 182 150 160 10Z" fill="#fde9e2" opacity=".95"/>
+        <path d="M482 10 Q 450 120 468 300 L 430 300 Q 418 150 440 10Z" fill="#fde9e2" opacity=".95"/>
+        <path d="M128 40 Q 140 160 140 300" stroke="#f6c9c3" stroke-width="2" fill="none"/>
+        <path d="M472 40 Q 460 160 460 300" stroke="#f6c9c3" stroke-width="2" fill="none"/>
+        <rect x="104" y="6" width="392" height="8" rx="4" fill="#d6a884"/>
+        <!-- guirnalda de luces -->
+        <path d="M150 40 Q 300 80 450 40" fill="none" stroke="#c9a790" stroke-width="1.2"/>
+        <g fill="#f8e3a8"><circle cx="180" cy="50" r="4"/><circle cx="215" cy="58" r="4"/><circle cx="250" cy="63" r="4"/><circle cx="300" cy="65" r="4"/><circle cx="350" cy="63" r="4"/><circle cx="385" cy="58" r="4"/><circle cx="420" cy="50" r="4"/></g>
+
+        <!-- nota pegada en la pared -->
+        <g transform="rotate(4 508 140)">
+          <rect x="478" y="100" width="62" height="70" rx="3" fill="#fff8d8"/>
+          <rect x="497" y="94" width="24" height="10" fill="#f6c9c3" opacity=".8"/>
+          <path d="M488 122h40M488 134h34M488 146h28" stroke="#c9a790" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <!-- escritorio -->
+        <rect x="0" y="300" width="560" height="140" fill="url(#desk)"/>
+        <rect x="0" y="296" width="560" height="10" rx="3" fill="#efcfb2"/>
+
+        <!-- florero con tulipanes -->
+        <g class="sway">
+          <path d="M100 300 Q 96 240 120 200" stroke="#8fae76" stroke-width="3" fill="none"/>
+          <path d="M108 300 Q 116 230 150 190" stroke="#8fae76" stroke-width="3" fill="none"/>
+          <path d="M104 300 Q 92 250 80 215" stroke="#8fae76" stroke-width="3" fill="none"/>
+          <path d="M112 190 q8 -24 16 0 q-2 14 -8 14 q-6 0 -8 -14Z" fill="#f2a7a5"/>
+          <path d="M142 180 q8 -24 16 0 q-2 14 -8 14 q-6 0 -8 -14Z" fill="#e8918f"/>
+          <path d="M72 205 q8 -24 16 0 q-2 14 -8 14 q-6 0 -8 -14Z" fill="#f6c9c3"/>
+          <path d="M96 260 q-22 -6 -26 -24 q18 2 26 24Z" fill="#a8c293"/>
+          <path d="M112 250 q20 -10 30 -4 q-12 14 -30 4Z" fill="#a8c293"/>
+        </g>
+        <path d="M84 262 h40 q4 0 4 6 q0 34 -10 38 h-28 q-10 -4 -10 -38 q0 -6 4 -6Z" fill="#e6f1f4" opacity=".85" stroke="#cfe4ee" stroke-width="2"/>
+        <path d="M86 280 h36" stroke="#cfe4ee" stroke-width="2"/>
+
+        <!-- cuaderno abierto -->
+        <g transform="rotate(-6 270 360)">
+          <rect x="170" y="318" width="210" height="96" rx="8" fill="#e8918f"/>
+          <rect x="176" y="314" width="98" height="94" rx="4" fill="#fffaf4"/>
+          <rect x="276" y="314" width="98" height="94" rx="4" fill="#fffaf4"/>
+          <path d="M275 314 v94" stroke="#efd9c8" stroke-width="2"/>
+          <g stroke="#efd9c8" stroke-width="1.5"><path d="M188 336h74M188 350h74M188 364h74M188 378h74M188 392h60"/><path d="M288 336h74M288 350h74M288 364h74M288 378h74M288 392h50"/></g>
+          <text x="190" y="333" font-family="Gaegu, cursive" font-size="15" fill="#5b4740">querido diario,</text>
+          <path d="M296 345 l6 6 l10 -12" stroke="#e8918f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M318 373 c4 -6 10 -6 10 0 c0 6 -10 12 -10 12 c0 0 -10 -6 -10 -12 c0 -6 6 -6 10 0Z" fill="#f6c9c3"/>
+          <!-- lápiz -->
+          <g transform="rotate(30 360 360)">
+            <rect x="344" y="330" width="12" height="74" rx="2" fill="#f8e3a8"/>
+            <path d="M344 404 l6 14 l6 -14Z" fill="#efcfb2"/><path d="M348 413 l2 5 l2 -5Z" fill="#5b4740"/>
+            <rect x="344" y="324" width="12" height="8" rx="2" fill="#f2a7a5"/>
+          </g>
+        </g>
+
+        <!-- taza -->
+        <g>
+          <g class="steam" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9">
+            <path d="M420 262 q-6 -10 0 -20"/><path d="M434 258 q-6 -10 0 -20"/><path d="M448 262 q-6 -10 0 -20"/>
+          </g>
+          <path d="M404 272 h60 v46 q0 18 -18 18 h-24 q-18 0 -18 -18Z" fill="#f2a7a5"/>
+          <path d="M464 284 q22 0 20 18 q-2 16 -20 14" stroke="#f2a7a5" stroke-width="8" fill="none"/>
+          <ellipse cx="434" cy="272" rx="30" ry="6" fill="#c98a6b"/>
+          <path d="M434 312 c-8 -6 -14 -10 -14 -16 a6 6 0 0 1 14 -2 a6 6 0 0 1 14 2 c0 6 -6 10 -14 16Z" fill="#fff" opacity=".85"/>
+        </g>
+
+        <!-- pila de libros + planta -->
+        <rect x="486" y="312" width="70" height="16" rx="3" fill="#b9cba8"/>
+        <rect x="492" y="298" width="62" height="15" rx="3" fill="#f6c9c3"/>
+        <rect x="488" y="284" width="66" height="15" rx="3" fill="#f8e3a8"/>
+        <path d="M506 284 v-14 h26 v14Z" fill="#fff4ea" stroke="#efd9c8"/>
+        <g class="sway"><path d="M519 270 q-18 -8 -16 -26 q16 6 16 26Z" fill="#9fbd85"/><path d="M519 270 q16 -12 22 -26 q-20 4 -22 26Z" fill="#b2cb98"/><path d="M519 270 q2 -20 0 -34" stroke="#8fae76" stroke-width="2"/></g>
+
+        <!-- nubecita kawaii -->
+        <g class="bob">
+          <path d="M20 360 q-14 0 -14 -16 q0 -16 18 -14 q4 -20 26 -18 q18 2 20 18 q16 -2 18 14 q0 16 -16 16Z" fill="#fff" stroke="#f3dccb" stroke-width="2"/>
+          <circle cx="40" cy="340" r="2.6" fill="#5b4740"/><circle cx="58" cy="340" r="2.6" fill="#5b4740"/>
+          <path d="M45 346 q4 4 8 0" stroke="#5b4740" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="33" cy="347" rx="5" ry="3" fill="#f6c9c3"/><ellipse cx="65" cy="347" rx="5" ry="3" fill="#f6c9c3"/>
+        </g>
+
+        <!-- sobrecito -->
+        <g transform="rotate(8 470 390)">
+          <rect x="440" y="372" width="60" height="40" rx="4" fill="#fffaf4" stroke="#efd9c8" stroke-width="2"/>
+          <path d="M440 374 l30 20 l30 -20" fill="none" stroke="#efd9c8" stroke-width="2"/>
+          <circle cx="470" cy="392" r="6" fill="#e8918f"/>
+        </g>
+      </svg>
+
+      <div class="hero-stamp">
+        <span><i></i>cosido a mano</span>
+        <span><i style="background:#f6c9c3"></i>papel reciclado</span>
+        <span><i style="background:#f8e3a8"></i>envíos a todo el país</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TIENDA ================= -->
+<section class="shop" id="tienda">
+  <div class="wrap">
+    <div class="head">
+      <small>✿ la colección de otoño ✿</small>
+      <h2>cuadernos con alma</h2>
+      <p>Cada uno es único: pequeñas diferencias en el cosido, el papel y las tapas que los hacen tuyos.</p>
+    </div>
+    <div class="filters" id="filters">
+      <button class="chip on" data-f="todos">todos</button>
+      <button class="chip" data-f="diario">diarios</button>
+      <button class="chip" data-f="bocetos">bocetos</button>
+      <button class="chip" data-f="mini">mini</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ================= PROCESO ================= -->
+<section class="process" id="proceso">
+  <div class="wrap">
+    <div class="head">
+      <small>✎ de nuestras manos a las tuyas</small>
+      <h2>así nace un cuaderno</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="bubble"><span class="num">1</span>
+          <svg viewBox="0 0 60 60"><rect x="12" y="10" width="36" height="42" rx="3" fill="#fffaf4" stroke="#c96e6e" stroke-width="2.5"/><path d="M19 22h22M19 30h22M19 38h14" stroke="#e8918f" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <h4>elegimos el papel</h4>
+        <p>Papel reciclado y de algodón, de 90 a 160 g, suave para tinta y acuarela.</p>
+      </div>
+      <div class="step">
+        <div class="bubble"><span class="num">2</span>
+          <svg viewBox="0 0 60 60"><path d="M10 44 L44 10" stroke="#7d9a68" stroke-width="3" stroke-linecap="round"/><circle cx="46" cy="8" r="4" fill="none" stroke="#7d9a68" stroke-width="2.5"/><path d="M14 50 q10 -6 20 0 t20 0" fill="none" stroke="#e8918f" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 4"/></svg>
+        </div>
+        <h4>cosemos a mano</h4>
+        <p>Encuadernación copta o japonesa, con hilo encerado que dura años.</p>
+      </div>
+      <div class="step">
+        <div class="bubble"><span class="num">3</span>
+          <svg viewBox="0 0 60 60"><rect x="14" y="12" width="32" height="40" rx="4" fill="#f8e3a8" stroke="#c9a04a" stroke-width="2.5"/><path d="M30 26 c-4 -5 -11 -2 -8 4 c2 4 8 8 8 8 s6 -4 8 -8 c3 -6 -4 -9 -8 -4Z" fill="#e8918f"/></svg>
+        </div>
+        <h4>decoramos las tapas</h4>
+        <p>Tela, papel estampado o lino, con detalles pintados uno por uno.</p>
+      </div>
+      <div class="step">
+        <div class="bubble"><span class="num">4</span>
+          <svg viewBox="0 0 60 60"><rect x="10" y="20" width="40" height="28" rx="3" fill="#fffaf4" stroke="#6f9bb0" stroke-width="2.5"/><path d="M10 22 l20 14 l20 -14" fill="none" stroke="#6f9bb0" stroke-width="2.5"/><circle cx="30" cy="36" r="4" fill="#e8918f"/></svg>
+        </div>
+        <h4>lo enviamos con amor</h4>
+        <p>Envuelto en papel de seda, con una notita escrita a mano y un sticker.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PERSONALIZÁ ================= -->
+<section class="custom" id="personaliza">
+  <div class="wrap">
+    <div class="custom-box">
+      <div class="preview" id="preview"></div>
+      <div>
+        <div class="head" style="text-align:left;margin-bottom:10px">
+          <small>♡ hecho a tu medida</small>
+          <h2>diseñá tu cuaderno</h2>
+          <p style="margin:8px 0 0">Elegí el color, el tipo de hojas y escribí tu nombre en la tapa. Lo cosemos para vos en 5 a 7 días.</p>
+        </div>
+        <div class="field">
+          <label>color de tapa</label>
+          <div class="swatches" id="swatches"></div>
+        </div>
+        <div class="field">
+          <label>hojas</label>
+          <div class="opts" id="paper">
+            <button class="opt on" data-v="lisas">lisas</button>
+            <button class="opt" data-v="rayadas">rayadas</button>
+            <button class="opt" data-v="punteadas">punteadas</button>
+            <button class="opt" data-v="cuadriculadas">cuadriculadas</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>tamaño</label>
+          <div class="opts" id="size">
+            <button class="opt" data-v="A6" data-p="0">A6</button>
+            <button class="opt on" data-v="A5" data-p="4000">A5</button>
+            <button class="opt" data-v="A4" data-p="9000">A4</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="nameInput">nombre en la tapa</label>
+          <input id="nameInput" maxlength="14" placeholder="tu nombre ✎">
+        </div>
+        <div class="custom-price">total: <b id="customPrice">$0</b></div>
+        <button class="btn" id="addCustom">sumar al carrito</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OPINIONES ================= -->
+<section class="reviews" id="opiniones">
+  <div class="wrap">
+    <div class="head">
+      <small>✉ cartitas que nos llegan</small>
+      <h2>lo que dicen de nosotras</h2>
+    </div>
+    <div class="notes">
+      <div class="note"><div class="stars">★★★★★</div>"Lo abrí y olía a papel nuevo y a algo hecho con cariño. Ya es mi diario de todos los días."<cite>— Martina, Córdoba</cite></div>
+      <div class="note"><div class="stars">★★★★★</div>"Las hojas aguantan la acuarela sin ondularse. Pedí el segundo antes de terminar el primero."<cite>— Lu, Rosario</cite></div>
+      <div class="note"><div class="stars">★★★★★</div>"Se lo regalé a mi mamá con su nombre en la tapa y lloró. Gracias por la notita escrita a mano."<cite>— Caro, Mendoza</cite></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NEWSLETTER ================= -->
+<section class="letter">
+  <div class="wrap">
+    <div class="letter-box">
+      <div>
+        <h3>cartas desde el taller ✿</h3>
+        <p>Nuevas colecciones, descuentos y un poquito de lo que pasa entre hilos y papeles.</p>
+      </div>
+      <form class="letter-form" id="letterForm">
+        <input type="email" required placeholder="tu correo electrónico" aria-label="Correo electrónico">
+        <button class="btn" type="submit">suscribirme</button>
+      </form>
+      <div class="letter-msg" id="letterMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo">Hojitas<span>.</span></div>
+        <p class="about">Un pequeño taller de encuadernación artesanal. Hacemos cuadernos para guardar ideas, recuerdos y pequeños momentos.</p>
+      </div>
+      <div><h5>tienda</h5><ul><li><a href="#tienda">diarios</a></li><li><a href="#tienda">bocetos</a></li><li><a href="#tienda">mini</a></li><li><a href="#personaliza">personalizados</a></li></ul></div>
+      <div><h5>ayuda</h5><ul><li><a href="#">envíos</a></li><li><a href="#">cambios</a></li><li><a href="#">cuidados del cuaderno</a></li><li><a href="#">preguntas</a></li></ul></div>
+      <div><h5>seguinos</h5><ul><li><a href="#">instagram</a></li><li><a href="#">pinterest</a></li><li><a href="#">tiktok</a></li><li><a href="#">hola@hojitas.com</a></li></ul></div>
+    </div>
+    <p class="copy">hecho con ♡ y mucho hilo · © 2026 Hojitas.</p>
+  </div>
+</footer>
+
+<!-- ================= CARRITO ================= -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Carrito">
+  <div class="drawer-head">
+    <h3>tu carrito</h3>
+    <button class="icon-btn" id="closeCart" aria-label="Cerrar carrito"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>total</span><span id="cartTotal">$0</span></div>
+    <div class="ship" id="shipMsg"></div>
+    <div class="bar"><i id="shipBar"></i></div>
+    <button class="btn" id="checkout">finalizar compra</button>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ---------- Datos ---------- */
+  const products = [
+    {id:1, name:'Diario Tulipán', cat:'diario', price:18500, meta:'A5 · 160 hojas lisas · cosido copto', cover:'#f2a7a5', bg:'#fde9e2', motif:'flower', tag:'favorito'},
+    {id:2, name:'Bocetos Salvia', cat:'bocetos', price:22900, meta:'A4 · papel 160 g · tapa de lino', cover:'#b2cb98', bg:'#e7efdc', motif:'leaf', tag:'nuevo'},
+    {id:3, name:'Mini Mantequilla', cat:'mini', price:9800, meta:'A6 · 96 hojas punteadas', cover:'#f8e3a8', bg:'#fbf1d6', motif:'star'},
+    {id:4, name:'Diario Nube', cat:'diario', price:19500, meta:'A5 · 160 hojas rayadas · tela', cover:'#cfe4ee', bg:'#e6f1f4', motif:'cloud'},
+    {id:5, name:'Bocetos Terracota', cat:'bocetos', price:24500, meta:'A4 · acuarela 200 g · cuero vegano', cover:'#d9a58c', bg:'#f6e3d8', motif:'sun', tag:'últimos'},
+    {id:6, name:'Mini Corazón', cat:'mini', price:8900, meta:'A6 · 96 hojas lisas · tapa estampada', cover:'#f6c9c3', bg:'#fdeeea', motif:'heart'},
+  ];
+
+  const motifs = {
+    flower:`<g transform="translate(60 70)"><circle r="7" fill="#f8e3a8"/>${[0,72,144,216,288].map(a=>`<ellipse rx="7" ry="12" cy="-14" fill="#fff" opacity=".9" transform="rotate(${a})"/>`).join('')}<circle r="6" fill="#f8e3a8"/></g>`,
+    leaf:`<g transform="translate(60 72)" fill="#fff" opacity=".9"><path d="M0 22 V-20" stroke="#fff" stroke-width="2.5"/><path d="M0 -6 q-18 -4 -20 -20 q16 0 20 20Z"/><path d="M0 4 q18 -4 20 -20 q-16 0 -20 20Z"/><path d="M0 14 q-16 -2 -18 -16 q14 0 18 16Z"/></g>`,
+    star:`<path d="M60 48 l6 14 l15 1 l-11 10 l4 15 l-14 -8 l-14 8 l4 -15 l-11 -10 l15 -1Z" fill="#fff" opacity=".9"/>`,
+    cloud:`<path d="M42 82 q-12 0 -12 -12 q0 -12 14 -10 q4 -14 18 -12 q14 2 14 14 q12 0 12 10 q0 10 -12 10Z" fill="#fff"/><circle cx="52" cy="72" r="2" fill="#5b4740"/><circle cx="66" cy="72" r="2" fill="#5b4740"/><path d="M56 76 q3 3 6 0" stroke="#5b4740" stroke-width="1.6" fill="none"/>`,
+    sun:`<g transform="translate(60 70)" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M0 -16 V-24" transform="rotate(${a})"/>`).join('')}<circle r="10" fill="#fff" stroke="none"/></g>`,
+    heart:`<path d="M60 90 c-14 -10 -24 -18 -24 -28 a11 11 0 0 1 24 -4 a11 11 0 0 1 24 4 c0 10 -10 18 -24 28Z" fill="#fff" opacity=".92"/>`,
+  };
+
+  function notebookSVG(color, motif, label=''){
+    const lbl = label ? `<rect x="30" y="104" width="60" height="18" rx="4" fill="#fffaf4"/><text x="60" y="117" text-anchor="middle" font-family="Gaegu, cursive" font-size="13" font-weight="700" fill="#5b4740">${label}</text>` : '';
+    return `<svg viewBox="0 0 120 160">
+      <rect x="14" y="8" width="98" height="146" rx="6" fill="#fffaf4" stroke="#efd9c8" stroke-width="1.5"/>
+      <rect x="10" y="4" width="98" height="148" rx="8" fill="${color}"/>
+      <g stroke="#fff" stroke-width="2" stroke-dasharray="4 5" opacity=".75">
+        <path d="M18 14 V144"/>
+      </g>
+      <g fill="#fff" opacity=".85"><circle cx="18" cy="30" r="2"/><circle cx="18" cy="60" r="2"/><circle cx="18" cy="90" r="2"/><circle cx="18" cy="120" r="2"/></g>
+      ${motifs[motif]||''}
+      ${lbl}
+      <rect x="94" y="0" width="7" height="34" fill="#e8918f"/><path d="M94 34 l3.5 -5 l3.5 5Z" fill="${color}"/>
+    </svg>`;
+  }
+
+  const fmt = n => '$' + n.toLocaleString('es-AR');
+
+  /* ---------- Tienda ---------- */
+  const grid = document.getElementById('grid');
+  function renderGrid(filter='todos'){
+    grid.innerHTML = products.filter(p => filter==='todos' || p.cat===filter).map(p => `
+      <article class="card">
+        <span class="tape"></span>
+        <div class="cover" style="background:${p.bg}">
+          ${p.tag ? `<span class="tag">${p.tag}</span>`:''}
+          <button class="fav" aria-label="Guardar en favoritos"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg></button>
+          ${notebookSVG(p.cover, p.motif)}
+        </div>
+        <h3>${p.name}</h3>
+        <div class="meta">${p.meta}</div>
+        <div class="row">
+          <span class="price">${fmt(p.price)}</span>
+          <button class="add" data-id="${p.id}">agregar +</button>
+        </div>
+      </article>`).join('');
+  }
+  renderGrid();
+
+  document.getElementById('filters').addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if(!b) return;
+    document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c===b));
+    renderGrid(b.dataset.f);
+  });
+
+  grid.addEventListener('click', e => {
+    const fav = e.target.closest('.fav');
+    if(fav){ fav.classList.toggle('on'); return; }
+    const add = e.target.closest('.add'); if(!add) return;
+    const p = products.find(x => x.id == add.dataset.id);
+    addToCart({key:'p'+p.id, name:p.name, sub:p.meta.split(' · ')[0], price:p.price, color:p.cover, bg:p.bg, motif:p.motif});
+    add.classList.add('done'); add.textContent = '¡agregado! ✓';
+    setTimeout(() => { add.classList.remove('done'); add.textContent = 'agregar +'; }, 1400);
+  });
+
+  /* ---------- Carrito ---------- */
+  const cart = [];
+  const FREE_SHIP = 40000;
+  function addToCart(item){
+    const found = cart.find(i => i.key === item.key);
+    found ? found.qty++ : cart.push({...item, qty:1});
+    renderCart();
+    toast(`${item.name} está en tu carrito ♡`);
+  }
+  function renderCart(){
+    const body = document.getElementById('cartBody');
+    const count = cart.reduce((s,i)=>s+i.qty,0);
+    const total = cart.reduce((s,i)=>s+i.qty*i.price,0);
+    const badge = document.getElementById('badge');
+    badge.textContent = count; badge.classList.toggle('show', count>0);
+    body.innerHTML = cart.length ? cart.map((i,idx) => `
+      <div class="item">
+        <div class="mini" style="background:${i.bg}">${notebookSVG(i.color, i.motif)}</div>
+        <div class="info">
+          <h6>${i.name}</h6><div class="sub">${i.sub}</div>
+          <div class="qty"><button data-i="${idx}" data-d="-1" aria-label="Quitar uno">−</button><span>${i.qty}</span><button data-i="${idx}" data-d="1" aria-label="Agregar uno">+</button></div>
+        </div>
+        <span class="p">${fmt(i.price*i.qty)}</span>
+      </div>`).join('')
+      : `<div class="empty"><svg viewBox="0 0 120 160">${notebookSVG('#f6c9c3','heart').replace(/<\/?svg[^>]*>/g,'')}</svg>tu carrito está vacío...<br>¡llenalo de pequeños momentos!</div>`;
+    document.getElementById('cartTotal').textContent = fmt(total);
+    const left = FREE_SHIP - total;
+    document.getElementById('shipMsg').textContent = total===0 ? `Envío gratis desde ${fmt(FREE_SHIP)}` : left>0 ? `Te faltan ${fmt(left)} para el envío gratis ✿` : '¡Tenés envío gratis! ✿';
+    document.getElementById('shipBar').style.width = Math.min(100, total/FREE_SHIP*100) + '%';
+  }
+  document.getElementById('cartBody').addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]'); if(!b) return;
+    const i = cart[b.dataset.i]; i.qty += +b.dataset.d;
+    if(i.qty<=0) cart.splice(b.dataset.i,1);
+    renderCart();
+  });
+  const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay');
+  const openCart = () => { drawer.classList.add('open'); overlay.classList.add('open'); };
+  const closeCart = () => { drawer.classList.remove('open'); overlay.classList.remove('open'); };
+  document.getElementById('cartBtn').onclick = openCart;
+  document.getElementById('closeCart').onclick = closeCart;
+  overlay.onclick = closeCart;
+  document.getElementById('checkout').onclick = () => {
+    if(!cart.length){ toast('Primero agregá un cuaderno ♡'); return; }
+    toast('¡Gracias! Te escribimos para coordinar el pago ✉');
+  };
+  renderCart();
+
+  /* ---------- Personalizador ---------- */
+  const colors = ['#f2a7a5','#b2cb98','#f8e3a8','#cfe4ee','#d9a58c','#c9b6dd'];
+  const BASE = 16500;
+  const state = {color:colors[0], paper:'lisas', size:'A5', extra:4000, name:''};
+  const sw = document.getElementById('swatches');
+  sw.innerHTML = colors.map((c,i)=>`<button class="sw ${i?'':'on'}" style="background:${c}" data-c="${c}" aria-label="Color ${i+1}"></button>`).join('');
+  sw.onclick = e => { const b=e.target.closest('.sw'); if(!b) return; sw.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x===b)); state.color=b.dataset.c; renderPreview(); };
+  function optGroup(id, fn){
+    const g = document.getElementById(id);
+    g.onclick = e => { const b=e.target.closest('.opt'); if(!b) return; g.querySelectorAll('.opt').forEach(x=>x.classList.toggle('on',x===b)); fn(b); renderPreview(); };
+  }
+  optGroup('paper', b => state.paper = b.dataset.v);
+  optGroup('size', b => { state.size = b.dataset.v; state.extra = +b.dataset.p; });
+  const nameInput = document.getElementById('nameInput');
+  nameInput.oninput = () => { state.name = nameInput.value.trim(); renderPreview(); };
+  const escapeHTML = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function renderPreview(){
+    const scale = {A6:.82, A5:1, A4:1.14}[state.size];
+    document.getElementById('preview').innerHTML = notebookSVG(state.color, 'flower', escapeHTML(state.name));
+    document.querySelector('#preview svg').style.transform = `scale(${scale}) rotate(-4deg)`;
+    document.getElementById('customPrice').textContent = fmt(BASE + state.extra + (state.name ? 2000 : 0));
+  }
+  renderPreview();
+  document.getElementById('addCustom').onclick = () => {
+    const price = BASE + state.extra + (state.name ? 2000 : 0);
+    const key = ['c',state.color,state.paper,state.size,state.name].join('|');
+    addToCart({key, name: state.name ? `Cuaderno de ${escapeHTML(state.name)}` : 'Cuaderno a medida', sub:`${state.size} · hojas ${state.paper}`, price, color:state.color, bg:'#fdeee6', motif:'flower'});
+    openCart();
+  };
+
+  /* ---------- Newsletter ---------- */
+  document.getElementById('letterForm').onsubmit = e => {
+    e.preventDefault();
+    document.getElementById('letterMsg').textContent = '¡Listo! Tu primera cartita llega pronto ✉';
+    e.target.reset();
+  };
+
+  /* ---------- Menú y nav activo ---------- */
+  const menu = document.getElementById('menu');
+  document.getElementById('menuBtn').onclick = () => menu.classList.toggle('open');
+  menu.onclick = e => { if(e.target.tagName==='A') menu.classList.remove('open'); };
+  const links = [...menu.querySelectorAll('a')];
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if(en.isIntersecting) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+en.target.id));
+  }), {rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+
+  /* ---------- Toast ---------- */
+  let tt;
+  function toast(msg){
+    const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>
